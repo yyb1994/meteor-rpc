@@ -1,5 +1,5 @@
 package com.meteor.common.util;
-import java.nio.charset.StandardCharsets;
+import com.meteor.common.core.StandardCharsets;
 import java.security.MessageDigest;
 
 /**

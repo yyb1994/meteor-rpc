@@ -14,7 +14,6 @@ public interface Serializer {
 
     public <T> T deserialize(byte[] data, Class<T> cls) throws Exception;
 
-
     public <T> byte[] serializeList(List<T> obj, Class<T> cls) throws Exception;
 
     public <T> List<T> deserializeList(byte[] data, Class<T> cls) throws Exception;

@@ -1,7 +1,7 @@
 package com.meteor.common.test.serialize;
 
 
-import com.meteor.common.serialize.json.JsonSerializer;
+import com.meteor.common.serialize.json.FastJsonSerializer;
 import com.meteor.common.util.JsonUtil;
 
 import java.util.HashMap;
@@ -22,7 +22,7 @@ public class TestSerialize {
 
     public static void tesgFastJson() throws Exception {
         Person person = init();
-        String jsonString = new String(new JsonSerializer().serialize(person));
+        String jsonString = new String(new FastJsonSerializer().serialize(person));
         Person ser = JsonUtil.toObject(jsonString, Person.class);
         System.out.println(jsonString);
 

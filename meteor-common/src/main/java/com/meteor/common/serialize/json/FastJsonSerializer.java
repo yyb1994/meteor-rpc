@@ -3,7 +3,7 @@ package com.meteor.common.serialize.json;
 import com.alibaba.fastjson.JSON;
 import com.meteor.common.serialize.Serializer;
 
-import java.nio.charset.StandardCharsets;
+import com.meteor.common.core.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +13,7 @@ import java.util.Map;
  * @author SuperMu
  * @Date 2018/10/18  22:53
  */
-public class JsonSerializer implements Serializer {
+public class FastJsonSerializer implements Serializer {
 
     @Override
     public <T> byte[] serialize(T obj) throws Exception {

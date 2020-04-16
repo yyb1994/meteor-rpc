@@ -2,9 +2,10 @@ package com.meteor.common.util;
 
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
+import com.meteor.common.core.StandardCharsets;
+import com.meteor.common.serialize.Serializer;
 import com.meteor.common.serialize.json.GsonSerializer;
 
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -17,6 +18,7 @@ import java.util.Objects;
  */
 public class JsonUtil {
     private static final Log log = LogFactory.get();
+    private static final Serializer serializer = new GsonSerializer();
 
     /**
      * 对象转成String
@@ -44,7 +46,7 @@ public class JsonUtil {
      */
     public static <T> byte[] toJsonByte(T obj) {
         try {
-            return new GsonSerializer().serialize(obj);
+            return serializer.serialize(obj);
         } catch (Exception e) {
             log.error(e);
         }
@@ -73,7 +75,7 @@ public class JsonUtil {
      */
     public static <T> T toObject(byte[] data, Class<T> cls) {
         try {
-            return new GsonSerializer().deserialize(data, cls);
+            return serializer.deserialize(data, cls);
         } catch (Exception e) {
             log.error(e);
         }
@@ -103,7 +105,7 @@ public class JsonUtil {
      */
     public static <K, V> Map<K, V> toMap(byte[] data, Class<K> keyCls, Class<V> valCls) {
         try {
-            return new GsonSerializer().deserializeMap(data, keyCls, valCls);
+            return serializer.deserializeMap(data, keyCls, valCls);
         } catch (Exception e) {
             log.error(e);
         }
@@ -130,7 +132,7 @@ public class JsonUtil {
      */
     public static <T> List<T> toList(byte[] data, Class<T> cls) {
         try {
-            return new GsonSerializer().deserializeList(data, cls);
+            return serializer.deserializeList(data, cls);
         } catch (Exception e) {
             log.error(e);
         }

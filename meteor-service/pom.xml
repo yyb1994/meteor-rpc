@@ -10,17 +10,16 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.meteor.server</groupId>
-    <artifactId>meteor-server</artifactId>
+    <groupId>com.meteor.service</groupId>
+    <artifactId>meteor-service</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <dependencies>
         <dependency>
-            <groupId>com.meteor.service</groupId>
-            <artifactId>meteor-service</artifactId>
+            <groupId>com.meteor.common</groupId>
+            <artifactId>meteor-common</artifactId>
             <version>${project.version}</version>
         </dependency>
-
     </dependencies>
 
 </project>

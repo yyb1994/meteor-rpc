@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.meteor.common.serialize.Serializer;
 
-import java.nio.charset.StandardCharsets;
+import com.meteor.common.core.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
