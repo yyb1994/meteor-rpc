@@ -8,5 +8,5 @@ package com.meteor.common.core;
  */
 public class GlobalConstant {
 
-
+  public static int DEFAULT_IO_THREADS = Math.min(Runtime.getRuntime().availableProcessors() + 1, 32);
 }

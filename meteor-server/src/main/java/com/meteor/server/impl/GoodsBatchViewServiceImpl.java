@@ -9,6 +9,7 @@ import java.util.List;
 
 @MtProvider(version = "1.0.0", timeout = 300, group = "mt")
 public class GoodsBatchViewServiceImpl implements GoodsBatchViewService {
+
     public DataResult<List<GoodsCommonDTO>> goodsBatchQuery() {
 
         return new DataResult<List<GoodsCommonDTO>>();
