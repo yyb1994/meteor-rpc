@@ -3,24 +3,15 @@ package com.meteor.common.network.netty;
 
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
-
 import com.meteor.common.core.GlobalConstant;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
-import io.netty.channel.*;
-import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.SocketChannel;
-import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.logging.LogLevel;
-import io.netty.handler.logging.LoggingHandler;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelHandler;
+import io.netty.channel.ChannelOption;
 
-import java.math.BigDecimal;
 import java.net.InetSocketAddress;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.Timer;
-import java.util.concurrent.CountDownLatch;
-
 
 import static com.meteor.common.network.netty.NettyEventLoopFactory.eventLoopGroup;
 import static com.meteor.common.network.netty.NettyEventLoopFactory.socketChannelClass;
@@ -35,9 +26,14 @@ public class NettyClient {
     private static final Log log = LogFactory.get(NettyClient.class);
     private Bootstrap bootstrap;
     private volatile Channel channel;
-    private ChannelHandler serverChannel;
+    private final ChannelHandler serverChannel;
 
-    private InetSocketAddress inetSocketAddress;
+    private final InetSocketAddress inetSocketAddress;
+
+    public NettyClient(ChannelHandler serverChannel, InetSocketAddress inetSocketAddress) {
+        this.serverChannel = serverChannel;
+        this.inetSocketAddress = inetSocketAddress;
+    }
 
     public void doOpen() throws Throwable {
         bootstrap = new Bootstrap();
@@ -50,7 +46,7 @@ public class NettyClient {
                 .handler(serverChannel);
     }
 
-    protected void doConnect() throws Throwable {
+    public void doConnect() throws Throwable {
         ChannelFuture future = bootstrap.connect(inetSocketAddress);
         channel = future.channel();
         log.info("Successed connect to server " + channel.remoteAddress() + " from " + getClass().getSimpleName() + " "

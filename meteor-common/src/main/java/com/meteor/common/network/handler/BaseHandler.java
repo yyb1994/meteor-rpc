@@ -1,15 +1,11 @@
-package com.meteor.common.network;
+package com.meteor.common.network.handler;
 
 
 import io.netty.channel.ChannelHandlerContext;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-/**
- * 通用Handler处理
- * @author SuperMu
- * @time 2020-04-16
- */
+
 public abstract interface BaseHandler<T> {
 
     //自增Session_id

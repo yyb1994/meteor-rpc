@@ -9,15 +9,12 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
-import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.SocketChannel;
-import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.util.concurrent.DefaultThreadFactory;
 
 import java.net.InetSocketAddress;
 
 /**
  * netty server启动类
+ *
  * @author SuperMu
  * @time 2020-04-17
  */
@@ -25,9 +22,9 @@ public class NettyServer {
 
     private static final Log log = LogFactory.get(NettyServer.class);
 
-    private int socketPort;
+    private final int socketPort;
 
-    private ChannelHandler serverChannel;
+    private final ChannelHandler serverChannel;
 
     private io.netty.channel.Channel channel;
 
@@ -36,6 +33,10 @@ public class NettyServer {
     private EventLoopGroup bossGroup;
     private EventLoopGroup workerGroup;
 
+    public NettyServer(int socketPort, ChannelHandler serverChannel) {
+        this.socketPort = socketPort;
+        this.serverChannel = serverChannel;
+    }
 
     public void doOpen() throws Throwable {
         bossGroup = NettyEventLoopFactory.eventLoopGroup(1, "NettyServerBoss");
@@ -53,9 +54,8 @@ public class NettyServer {
         ChannelFuture future = bootstrap.bind(socketPort).sync();
 
         log.info("Start " + getClass().getSimpleName() + " listen at " + socketPort);
-
         future.syncUninterruptibly();
-        channel.closeFuture().sync();
+        channel = future.channel();
 
     }
 
