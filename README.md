@@ -1,1 +1,1 @@
-meteor rpc 建成mtRpc
+meteor rpc 简称mtRpc

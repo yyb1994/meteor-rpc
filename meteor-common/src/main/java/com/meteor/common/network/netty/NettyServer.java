@@ -2,7 +2,7 @@ package com.meteor.common.network.netty;
 
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
-import com.meteor.common.core.GlobalConstant;
+import com.meteor.common.core.CommonConstants;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.ChannelFuture;
@@ -40,7 +40,7 @@ public class NettyServer {
 
     public void doOpen() throws Throwable {
         bossGroup = NettyEventLoopFactory.eventLoopGroup(1, "NettyServerBoss");
-        workerGroup = NettyEventLoopFactory.eventLoopGroup(GlobalConstant.DEFAULT_IO_THREADS, "NettyServerWorker");
+        workerGroup = NettyEventLoopFactory.eventLoopGroup(CommonConstants.DEFAULT_IO_THREADS, "NettyServerWorker");
         bootstrap = new ServerBootstrap();
         bootstrap.group(bossGroup, workerGroup)
                 .channel(NettyEventLoopFactory.serverSocketChannelClass())

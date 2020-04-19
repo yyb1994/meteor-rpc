@@ -3,7 +3,7 @@ package com.meteor.common.network.netty;
 
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
-import com.meteor.common.core.GlobalConstant;
+import com.meteor.common.core.CommonConstants;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.Channel;
@@ -37,7 +37,7 @@ public class NettyClient {
 
     public void doOpen() throws Throwable {
         bootstrap = new Bootstrap();
-        bootstrap.group(eventLoopGroup(GlobalConstant.DEFAULT_IO_THREADS, "NettyClientWorker"))
+        bootstrap.group(eventLoopGroup(CommonConstants.DEFAULT_IO_THREADS, "NettyClientWorker"))
                 .option(ChannelOption.SO_KEEPALIVE, true)
                 .option(ChannelOption.TCP_NODELAY, true)
                 .option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)

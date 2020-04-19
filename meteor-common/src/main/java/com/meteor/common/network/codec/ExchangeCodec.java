@@ -2,54 +2,53 @@ package com.meteor.common.network.codec;
 
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
+import com.meteor.common.core.StandardCharsets;
+import com.meteor.common.network.exchange.Request;
+import com.meteor.common.network.exchange.Response;
 import com.meteor.common.network.protocol.PacketBase;
+import com.meteor.common.util.Assert;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageCodec;
 
-import com.meteor.common.core.StandardCharsets;
 import java.util.List;
 
 /**
- * netty 自定义协议
+ * 自定义编解码
+ * http://dubbo.apache.org/zh-cn/blog/dubbo-protocol.html
  *
  * @author SuperMu
- * @Date 2019/2/13  16:12
+ * @time 2020-04-19
  */
-public class SelfDefinedCodec extends ByteToMessageCodec<PacketBase> {
-    private static final Log log = LogFactory.get();
-    //头部信息的大小应该是 byte+byte+int = 1+1+4 = 6
-    private static final int HEADER_SIZE = 6;
+public class ExchangeCodec extends ByteToMessageCodec<Object> {
+    private static final Log log = LogFactory.get(ExchangeCodec.class);
+
 
     @Override
-    protected void encode(ChannelHandlerContext ctx, PacketBase msg, ByteBuf out) {
-        try {
-            if (msg == null) {
-                throw new Exception("msg is null");
-            }
-            // 1.写入协议编号(byte类型)
-            out.writeByte(msg.getPacketType());
-            // 2.写入状态码(byte 类型)
-            out.writeByte(msg.getCode());
-            // 3.写入消息长度(int 类型)
-            out.writeInt(msg.getContentLength());
-            // 4.写入消息的内容(byte[]类型)
-            if (msg.getData() != null) {
-                byte[] data = msg.getData().getBytes(StandardCharsets.UTF_8);
-                out.writeBytes(data);
-            }
-        } catch (Exception e) {
-            log.error(e);
+    protected void encode(ChannelHandlerContext ctx, Object msg, ByteBuf out) throws Exception {
+        Assert.notNull(out, "ByteBuf == null");
+        if (msg instanceof Request) {
+            //发送请求编码
+            encodeRequest(ctx, msg, out);
+        } else if (msg instanceof Response) {
+            //接收请求编码
+            encodeResponse(ctx, msg, out);
         }
+    }
+
+    protected void encodeRequest(ChannelHandlerContext ctx, Object msg, ByteBuf out) {
+    }
+
+    protected void encodeResponse(ChannelHandlerContext ctx, Object msg, ByteBuf out) {
     }
 
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf buffer,
                           List<Object> out) throws Exception {
         try {
-            if (buffer.readableBytes() < HEADER_SIZE) {
-                return;
-            }
+//            if (buffer.readableBytes() < HEADER_SIZE) {
+//                return;
+//            }
 
             buffer.markReaderIndex();
             // 1.读取协议编号

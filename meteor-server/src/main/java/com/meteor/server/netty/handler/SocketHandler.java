@@ -79,8 +79,7 @@ public class SocketHandler extends ChannelInboundHandlerAdapter implements BaseH
 
 
     @Override
-    public void initWhenConnected(ChannelHandlerContext ctx) {
-        HallSession session = new HallSession();
+    public void initWhenConnected(ChannelHandlerContext ctx) { HallSession session = new HallSession();
         session.channel = ctx.channel();
         session.initTime = System.currentTimeMillis();
         session.sessionId = SESSION_ID_ATOMIC_INTEGER.incrementAndGet();
