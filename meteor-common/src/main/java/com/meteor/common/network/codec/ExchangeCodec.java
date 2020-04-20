@@ -22,7 +22,12 @@ import java.util.List;
  */
 public class ExchangeCodec extends ByteToMessageCodec<Object> {
     private static final Log log = LogFactory.get(ExchangeCodec.class);
-
+    // header length.
+    protected static final int HEADER_LENGTH = 16;
+    // message flag.
+    public static final byte FLAG_REQUEST = (byte) 0x80;
+    public static final byte FLAG_TWOWAY = (byte) 0x40;
+    public static final byte FLAG_EVENT = (byte) 0x20;
 
     @Override
     protected void encode(ChannelHandlerContext ctx, Object msg, ByteBuf out) throws Exception {
@@ -37,6 +42,9 @@ public class ExchangeCodec extends ByteToMessageCodec<Object> {
     }
 
     protected void encodeRequest(ChannelHandlerContext ctx, Object msg, ByteBuf out) {
+        // header.
+        byte[] header = new byte[HEADER_LENGTH];//16个字节
+
     }
 
     protected void encodeResponse(ChannelHandlerContext ctx, Object msg, ByteBuf out) {
