@@ -16,7 +16,8 @@ import java.util.List;
 /**
  * 自定义编解码
  * http://dubbo.apache.org/zh-cn/blog/dubbo-protocol.html
- * flag 从高到低，第一位1 表示request请求，第二位1表示是心跳事件
+ * 协议长度14位，flag(1),status(1),invoke id(8),body length(4)
+ * flag 从高到低，第一位表示request请求，第二位表示是心跳事件
  *
  * @author SuperMu
  * @time 2020-04-19
@@ -31,22 +32,32 @@ public class ExchangeCodec extends ByteToMessageCodec<Object> {
     // 心跳
     public static final byte FLAG_EVENT = (byte) 0x40;
 
+
     @Override
     protected void encode(ChannelHandlerContext ctx, Object msg, ByteBuf out) throws Exception {
         Assert.notNull(out, "ByteBuf == null");
         if (msg instanceof Request) {
             //发送请求编码
-            encodeRequest(ctx, msg, out);
+            encodeRequest(ctx, (Request)msg, out);
         } else if (msg instanceof Response) {
             //接收请求编码
-            encodeResponse(ctx, msg, out);
+            encodeResponse(ctx, (Response)msg, out);
         }
     }
 
-    protected void encodeRequest(ChannelHandlerContext ctx, Object msg, ByteBuf out) {
-        // header.
-        byte[] header = new byte[HEADER_LENGTH];//16个字节
-
+    protected void encodeRequest(ChannelHandlerContext ctx, Request msg, ByteBuf out) {
+        // flag
+        byte flag = 0;
+        flag |= FLAG_REQUEST;
+        if (msg.isEvent()) {
+            flag |= FLAG_EVENT;
+        }
+        out.writeByte(flag);
+        // status
+        out.writeByte(0);
+        //invoke id
+        out.writeLong(msg.getId());
+        //
     }
 
     protected void encodeResponse(ChannelHandlerContext ctx, Object msg, ByteBuf out) {
