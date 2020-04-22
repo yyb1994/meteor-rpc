@@ -16,6 +16,7 @@ import java.util.List;
 /**
  * 自定义编解码
  * http://dubbo.apache.org/zh-cn/blog/dubbo-protocol.html
+ * flag 从高到低，第一位1 表示request请求，第二位1表示是心跳事件
  *
  * @author SuperMu
  * @time 2020-04-19
@@ -23,11 +24,12 @@ import java.util.List;
 public class ExchangeCodec extends ByteToMessageCodec<Object> {
     private static final Log log = LogFactory.get(ExchangeCodec.class);
     // header length.
-    protected static final int HEADER_LENGTH = 16;
+    protected static final int HEADER_LENGTH = 14;
     // message flag.
+    // request请求
     public static final byte FLAG_REQUEST = (byte) 0x80;
-    public static final byte FLAG_TWOWAY = (byte) 0x40;
-    public static final byte FLAG_EVENT = (byte) 0x20;
+    // 心跳
+    public static final byte FLAG_EVENT = (byte) 0x40;
 
     @Override
     protected void encode(ChannelHandlerContext ctx, Object msg, ByteBuf out) throws Exception {
