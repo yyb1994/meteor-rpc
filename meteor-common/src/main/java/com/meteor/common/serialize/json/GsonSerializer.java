@@ -49,7 +49,7 @@ public class GsonSerializer implements Serializer {
 
     @Override
     public <K, V> Map<K, V> deserializeMap(byte[] data, Class<K> keyCls, Class<V> valCls) throws Exception {
-        return new Gson().fromJson(new String(data, StandardCharsets.UTF_8), new TypeToken<Map<K, V>>() {
+        return (Map<K, V>) new Gson().fromJson(new String(data, StandardCharsets.UTF_8), new TypeToken<Map<K, V>>() {
         }.getType());
     }
 

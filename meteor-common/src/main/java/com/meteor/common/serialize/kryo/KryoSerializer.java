@@ -11,6 +11,8 @@ import com.meteor.common.serialize.Serializer;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,8 +51,15 @@ public class KryoSerializer implements Serializer {
         kryo.register(clazz, new JavaSerializer());
 
         ByteArrayInputStream bais = new ByteArrayInputStream(data);
-        Input input = new Input(bais);
-        Object o = kryo.readClassAndObject(input);
+//        Input input = new Input(bais);
+//        Object o = kryo.readClassAndObject(input);
+        Object o = null;
+        try {
+            ObjectInputStream inputStream = new ObjectInputStream(bais);
+            o = inputStream.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         kryoFactory.release(kryo);
         return (T) o;
     }

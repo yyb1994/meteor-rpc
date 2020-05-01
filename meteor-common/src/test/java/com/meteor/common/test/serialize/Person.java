@@ -1,7 +1,13 @@
 package com.meteor.common.test.serialize;
 
 
-public class Person {
+import com.meteor.common.core.BaseBean;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+@EqualsAndHashCode(callSuper = true)
+@Data
+public class Person extends BaseBean {
     private String name;
     private int age;
     private String remark;

@@ -1,11 +1,13 @@
 package com.meteor.common.serialize.json;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.meteor.common.core.StandardCharsets;
 import com.meteor.common.serialize.Serializer;
 
-import com.meteor.common.core.StandardCharsets;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * fastjson 序列化和反序列化
@@ -42,7 +44,14 @@ public class FastJsonSerializer implements Serializer {
 
     @Override
     public <K, V> Map<K, V> deserializeMap(byte[] data, Class<K> keyCls, Class<V> valCls) throws Exception {
-        return (Map<K, V>) JSON.parseObject(new String(data, StandardCharsets.UTF_8), Map.class);
+        Map<K, V> re = JSON.parseObject(new String(data, StandardCharsets.UTF_8), Map.class);
+        return re.entrySet().stream().collect(Collectors.toMap(
+                kvEntry -> {
+                    return kvEntry.getKey();
+                }, kvEntry -> {
+                    return JSONObject.toJavaObject((JSONObject) kvEntry.getValue(), valCls);
+                }
+        ));
     }
 
 }
