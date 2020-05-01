@@ -5,13 +5,15 @@ import com.meteor.common.core.BaseBean;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.List;
+
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class Person extends BaseBean {
     private String name;
     private int age;
     private String remark;
-    private Person son;
+    private List<Person> sonList;
 
     public Person() {
     }
@@ -22,35 +24,5 @@ public class Person extends BaseBean {
         this.remark = remark;
     }
 
-    public String getName() {
-        return name;
-    }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
-    public Person getSon() {
-        return son;
-    }
-
-    public void setSon(Person son) {
-        this.son = son;
-    }
 }

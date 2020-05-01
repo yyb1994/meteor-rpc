@@ -11,8 +11,6 @@ import com.meteor.common.serialize.Serializer;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -51,15 +49,15 @@ public class KryoSerializer implements Serializer {
         kryo.register(clazz, new JavaSerializer());
 
         ByteArrayInputStream bais = new ByteArrayInputStream(data);
-//        Input input = new Input(bais);
-//        Object o = kryo.readClassAndObject(input);
-        Object o = null;
-        try {
-            ObjectInputStream inputStream = new ObjectInputStream(bais);
-            o = inputStream.readObject();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+        Input input = new Input(bais);
+        Object o = kryo.readClassAndObject(input);
+//        Object o = null;
+//        try {
+//            ObjectInputStream inputStream = new ObjectInputStream(bais);
+//            o = inputStream.readObject();
+//        } catch (IOException | ClassNotFoundException e) {
+//            e.printStackTrace();
+//        }
         kryoFactory.release(kryo);
         return (T) o;
     }
@@ -113,9 +111,11 @@ public class KryoSerializer implements Serializer {
         serializer.setKeyClass(keyClas, new JavaSerializer());
         serializer.setKeysCanBeNull(false);
         serializer.setValueClass(valCls, new JavaSerializer());
+//        serializer.setValueClass(valCls,  new BeanSerializer<V>(kryo, valCls));
         serializer.setValuesCanBeNull(true);
 
-        kryo.register(valCls, new JavaSerializer());
+//        kryo.register(valCls, new JavaSerializer());
+        kryo.register(HashMap.class, serializer);
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         Output output = new Output(baos);
@@ -137,9 +137,13 @@ public class KryoSerializer implements Serializer {
         serializer.setKeyClass(keyCls, new JavaSerializer());
         serializer.setKeysCanBeNull(false);
         serializer.setValueClass(valCls, new JavaSerializer());
+//        serializer.setValueClass(valCls,  new BeanSerializer<V>(kryo, valCls));
         serializer.setValuesCanBeNull(true);
 
-        kryo.register(valCls, new JavaSerializer());
+        //kryo.register(valCls, new JavaSerializer());
+
+
+        kryo.register(HashMap.class, serializer);
 
         ByteArrayInputStream bais = new ByteArrayInputStream(data);
         Input input = new Input(bais);
