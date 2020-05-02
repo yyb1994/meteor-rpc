@@ -4,6 +4,7 @@ package com.meteor.common.test.serialize;
 import com.meteor.common.serialize.Serializer;
 import com.meteor.common.serialize.json.FastJsonSerializer;
 import com.meteor.common.serialize.kryo.KryoSerializer;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -26,7 +27,7 @@ public class TestSerialize {
     }
 
     @Test
-    public void tesgFastJSON() throws Exception {
+    public void testFastJSON() throws Exception {
         serializer = new FastJsonSerializer();
         String str = new String(serializer.serialize(person));
         Person ser = serializer.deserialize(str.getBytes(), Person.class);
@@ -41,12 +42,12 @@ public class TestSerialize {
 
 
     @Test
-    public void tesgKryo() throws Exception {
+    public void testKryo() throws Exception {
         serializer = new KryoSerializer();
         {
             byte[] bytes = serializer.serialize(person);
-            Person ser = serializer.deserialize(bytes, Person.class);
-            System.out.println(ser);
+            Person father = serializer.deserialize(bytes, Person.class);
+            checkSerialize(person, father);
         }
 
         {
@@ -54,9 +55,15 @@ public class TestSerialize {
             personMap.put(1, person);
             byte[] bytes2 = serializer.serializeMap(personMap, Integer.class, Person.class);
             Map<Integer, Person> personMap2 = serializer.deserializeMap(bytes2, Integer.class, Person.class);
-            System.out.println();
+            Assertions.assertNotNull(personMap2);
+            Assertions.assertEquals(personMap.size(), personMap2.size());
+            Assertions.assertEquals(personMap.get(0), personMap2.get(0));
         }
     }
 
+    private void checkSerialize(Object before, Object after) {
+        Assertions.assertNotNull(after);
+        Assertions.assertEquals(before, after);
+    }
 
 }

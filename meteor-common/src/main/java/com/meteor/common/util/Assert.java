@@ -17,9 +17,15 @@
 
 package com.meteor.common.util;
 
+import com.google.common.base.Preconditions;
+
 public abstract class Assert {
 
     protected Assert() {
+    }
+
+    public static void notNull(Object obj) {
+        cn.hutool.core.lang.Assert.notNull(obj);
     }
 
     public static void notNull(Object obj, String message) {
@@ -30,5 +36,7 @@ public abstract class Assert {
         cn.hutool.core.lang.Assert.notBlank(str, message);
     }
 
+    public static void equals(Object expected, Object actual) {
+    }
 
 }
