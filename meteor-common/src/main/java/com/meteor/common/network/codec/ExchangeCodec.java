@@ -6,6 +6,8 @@ import com.meteor.common.core.StandardCharsets;
 import com.meteor.common.network.exchange.Request;
 import com.meteor.common.network.exchange.Response;
 import com.meteor.common.network.protocol.PacketBase;
+import com.meteor.common.serialize.Serializer;
+import com.meteor.common.serialize.kryo.KryoSerializer;
 import com.meteor.common.util.Assert;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -16,7 +18,7 @@ import java.util.List;
 /**
  * 自定义编解码
  * http://dubbo.apache.org/zh-cn/blog/dubbo-protocol.html
- * 协议长度14位，flag(1),status(1),invoke id(8),body length(4)
+ * 协议长度14位，flag(1),status(1),invoke id(8),body length(4),body
  * flag 从高到低，第一位表示request请求，第二位表示是心跳事件
  *
  * @author SuperMu
@@ -32,16 +34,18 @@ public class ExchangeCodec extends ByteToMessageCodec<Object> {
     // 心跳
     public static final byte FLAG_EVENT = (byte) 0x40;
 
+    private static final Serializer serializer = new KryoSerializer();
+
 
     @Override
     protected void encode(ChannelHandlerContext ctx, Object msg, ByteBuf out) throws Exception {
         Assert.notNull(out, "ByteBuf == null");
         if (msg instanceof Request) {
             //发送请求编码
-            encodeRequest(ctx, (Request)msg, out);
+            encodeRequest(ctx, (Request) msg, out);
         } else if (msg instanceof Response) {
             //接收请求编码
-            encodeResponse(ctx, (Response)msg, out);
+            encodeResponse(ctx, (Response) msg, out);
         }
     }
 
@@ -57,10 +61,47 @@ public class ExchangeCodec extends ByteToMessageCodec<Object> {
         out.writeByte(0);
         //invoke id
         out.writeLong(msg.getId());
-        //
+        //data
+        if (msg.isEvent()) {
+            out.writeInt(0);
+        } else {
+            //序列化消息体
+            byte[] body = serializer.serialize(msg.getData());
+            out.writeInt(body.length);
+            out.writeBytes(body);
+        }
     }
 
-    protected void encodeResponse(ChannelHandlerContext ctx, Object msg, ByteBuf out) {
+    protected void encodeResponse(ChannelHandlerContext ctx, Response res, ByteBuf out) {
+        // flag
+        byte flag = 0;
+        if (res.isEvent()) {
+            flag |= FLAG_EVENT;
+        }
+        out.writeByte(flag);
+        // status
+        // set response status.
+        byte status = res.getStatus();
+        out.writeByte(status);
+        //invoke id
+        out.writeLong(res.getId());
+        if (res.getStatus() == Response.OK) {
+            //data
+            if (res.isEvent()) {
+                out.writeInt(0);
+            } else {
+                //序列化消息体
+                byte[] body = serializer.serialize(res.getResult());
+                out.writeInt(body.length);
+                out.writeBytes(body);
+            }
+        } else {
+            //序列化消息体
+            byte[] body = res.getErrorMessage().getBytes(StandardCharsets.UTF_8);
+            out.writeInt(body.length);
+            out.writeBytes(body);
+        }
+
     }
 
     @Override
