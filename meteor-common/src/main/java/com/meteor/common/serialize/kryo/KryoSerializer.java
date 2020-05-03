@@ -51,13 +51,6 @@ public class KryoSerializer implements Serializer {
         ByteArrayInputStream bais = new ByteArrayInputStream(data);
         Input input = new Input(bais);
         Object o = kryo.readClassAndObject(input);
-//        Object o = null;
-//        try {
-//            ObjectInputStream inputStream = new ObjectInputStream(bais);
-//            o = inputStream.readObject();
-//        } catch (IOException | ClassNotFoundException e) {
-//            e.printStackTrace();
-//        }
         kryoFactory.release(kryo);
         return (T) o;
     }
@@ -70,7 +63,7 @@ public class KryoSerializer implements Serializer {
         serializer.setElementClass(cls, new JavaSerializer());
         serializer.setElementsCanBeNull(false);
 
-        kryo.register(cls, new JavaSerializer());
+        kryo.register(ArrayList.class, serializer);
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         Output output = new Output(baos);
@@ -85,14 +78,12 @@ public class KryoSerializer implements Serializer {
     @Override
     public <T> List<T> deserializeList(byte[] data, Class<T> cls) {
         Kryo kryo = kryoFactory.borrow();
-        kryo.setReferences(false);
-        kryo.setRegistrationRequired(true);
 
         CollectionSerializer serializer = new CollectionSerializer();
         serializer.setElementClass(cls, new JavaSerializer());
         serializer.setElementsCanBeNull(false);
 
-        kryo.register(cls, new JavaSerializer());
+        //kryo.register(cls, new JavaSerializer());
         kryo.register(ArrayList.class, serializer);
 
         ByteArrayInputStream bais = new ByteArrayInputStream(data);

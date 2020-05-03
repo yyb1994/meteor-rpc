@@ -97,5 +97,14 @@
             <artifactId>commons-collections4</artifactId>
             <version>4.4</version>
         </dependency>
+        <!-- https://github.com/ikidou/TypeBuilder -->
+        <dependency>
+            <groupId>com.github.ikidou</groupId>
+            <artifactId>TypeBuilder</artifactId>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/TypeBuilder-1.0.jar</systemPath>
+        </dependency>
     </dependencies>
+
+
 </project>

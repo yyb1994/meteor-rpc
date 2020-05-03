@@ -18,32 +18,32 @@ import java.util.stream.Collectors;
 public class FastJsonSerializer implements Serializer {
 
     @Override
-    public <T> byte[] serialize(T obj) throws Exception {
+    public <T> byte[] serialize(T obj) {
         return JSON.toJSONString(obj).getBytes(StandardCharsets.UTF_8);
     }
 
     @Override
-    public <T> T deserialize(byte[] data, Class<T> cls) throws Exception {
+    public <T> T deserialize(byte[] data, Class<T> cls) {
         return JSON.parseObject(new String(data, StandardCharsets.UTF_8), cls);
     }
 
     @Override
-    public <T> byte[] serializeList(List<T> obj, Class<T> cls) throws Exception {
+    public <T> byte[] serializeList(List<T> obj, Class<T> cls) {
         return JSON.toJSONString(obj).getBytes(StandardCharsets.UTF_8);
     }
 
     @Override
-    public <T> List<T> deserializeList(byte[] data, Class<T> cls) throws Exception {
+    public <T> List<T> deserializeList(byte[] data, Class<T> cls) {
         return JSON.parseArray(new String(data, StandardCharsets.UTF_8), cls);
     }
 
     @Override
-    public <K, V> byte[] serializeMap(Map<K, V> obj, Class<K> keyClas, Class<V> valCls) throws Exception {
+    public <K, V> byte[] serializeMap(Map<K, V> obj, Class<K> keyClas, Class<V> valCls) {
         return JSON.toJSONString(obj).getBytes(StandardCharsets.UTF_8);
     }
 
     @Override
-    public <K, V> Map<K, V> deserializeMap(byte[] data, Class<K> keyCls, Class<V> valCls) throws Exception {
+    public <K, V> Map<K, V> deserializeMap(byte[] data, Class<K> keyCls, Class<V> valCls) {
         Map<K, V> re = JSON.parseObject(new String(data, StandardCharsets.UTF_8), Map.class);
         return re.entrySet().stream().collect(Collectors.toMap(
                 kvEntry -> {
