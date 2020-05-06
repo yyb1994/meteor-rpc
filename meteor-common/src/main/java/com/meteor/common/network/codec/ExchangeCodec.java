@@ -32,13 +32,13 @@ public class ExchangeCodec extends ByteToMessageCodec<Object> {
     // request请求
     public static final byte FLAG_REQUEST = (byte) 0x80;
     // 心跳
-    public static final byte FLAG_EVENT = (byte) 0x40;
+    public static final byte HEART_BEAT_EVENT = (byte) 0x40;
 
     private static final Serializer serializer = new KryoSerializer();
 
 
     @Override
-    protected void encode(ChannelHandlerContext ctx, Object msg, ByteBuf out) throws Exception {
+    public void encode(ChannelHandlerContext ctx, Object msg, ByteBuf out) throws Exception {
         Assert.notNull(out, "ByteBuf == null");
         if (msg instanceof Request) {
             //发送请求编码
@@ -53,8 +53,8 @@ public class ExchangeCodec extends ByteToMessageCodec<Object> {
         // flag
         byte flag = 0;
         flag |= FLAG_REQUEST;
-        if (msg.isEvent()) {
-            flag |= FLAG_EVENT;
+        if (msg.isHeartbeat()) {
+            flag |= HEART_BEAT_EVENT;
         }
         out.writeByte(flag);
         // status
@@ -62,7 +62,7 @@ public class ExchangeCodec extends ByteToMessageCodec<Object> {
         //invoke id
         out.writeLong(msg.getId());
         //data
-        if (msg.isEvent()) {
+        if (msg.isHeartbeat()) {
             out.writeInt(0);
         } else {
             //序列化消息体
@@ -75,8 +75,8 @@ public class ExchangeCodec extends ByteToMessageCodec<Object> {
     protected void encodeResponse(ChannelHandlerContext ctx, Response res, ByteBuf out) {
         // flag
         byte flag = 0;
-        if (res.isEvent()) {
-            flag |= FLAG_EVENT;
+        if (res.isHeartbeat()) {
+            flag |= HEART_BEAT_EVENT;
         }
         out.writeByte(flag);
         // status
@@ -87,7 +87,7 @@ public class ExchangeCodec extends ByteToMessageCodec<Object> {
         out.writeLong(res.getId());
         if (res.getStatus() == Response.OK) {
             //data
-            if (res.isEvent()) {
+            if (res.isHeartbeat()) {
                 out.writeInt(0);
             } else {
                 //序列化消息体

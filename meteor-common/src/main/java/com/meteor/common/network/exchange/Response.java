@@ -85,7 +85,7 @@ public class Response {
 
     private byte mStatus = OK;
 
-    private boolean mEvent = false;
+    private boolean mHeartBeat = false;
 
     private String mErrorMsg;
 
@@ -127,27 +127,14 @@ public class Response {
         mStatus = status;
     }
 
-    public boolean isEvent() {
-        return mEvent;
-    }
-
-    public void setEvent(String event) {
-        mEvent = true;
-        mResult = event;
-    }
-
-    public void setEvent(boolean mEvent) {
-        this.mEvent = mEvent;
-    }
-
     public boolean isHeartbeat() {
-        return mEvent && HEARTBEAT_EVENT == mResult;
+        return mHeartBeat && HEARTBEAT_EVENT == mResult;
     }
 
-    @Deprecated
     public void setHeartbeat(boolean isHeartbeat) {
         if (isHeartbeat) {
-            setEvent(HEARTBEAT_EVENT);
+            this.mHeartBeat = true;
+            this.mResult = HEARTBEAT_EVENT;
         }
     }
 
@@ -169,7 +156,7 @@ public class Response {
 
     @Override
     public String toString() {
-        return "Response [id=" + mId + ", version=" + mVersion + ", status=" + mStatus + ", event=" + mEvent
+        return "Response [id=" + mId + ", version=" + mVersion + ", status=" + mStatus + ", heartBeat=" + mHeartBeat
                 + ", error=" + mErrorMsg + ", result=" + (mResult == this ? "this" : mResult) + "]";
     }
 }

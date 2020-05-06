@@ -36,7 +36,7 @@ public class Request {
 
     private boolean mTwoWay = true;
 
-    private boolean mEvent = false;
+    private boolean mHeartBeat = false;
 
     private boolean mBroken = false;
 
@@ -51,7 +51,6 @@ public class Request {
     }
 
     private static long newId() {
-        // getAndIncrement() When it grows to MAX_VALUE, it will grow to MIN_VALUE, and the negative can be used as ID
         return INVOKE_ID.getAndIncrement();
     }
 
@@ -89,19 +88,6 @@ public class Request {
         mTwoWay = twoWay;
     }
 
-    public boolean isEvent() {
-        return mEvent;
-    }
-
-    public void setEvent(String event) {
-        this.mEvent = true;
-        this.mData = event;
-    }
-
-    public void setEvent(boolean mEvent) {
-        this.mEvent = mEvent;
-    }
-
     public boolean isBroken() {
         return mBroken;
     }
@@ -119,18 +105,19 @@ public class Request {
     }
 
     public boolean isHeartbeat() {
-        return mEvent && HEARTBEAT_EVENT == mData;
+        return mHeartBeat && HEARTBEAT_EVENT == mData;
     }
 
     public void setHeartbeat(boolean isHeartbeat) {
         if (isHeartbeat) {
-            setEvent(HEARTBEAT_EVENT);
+            this.mHeartBeat = true;
+            this.mData = HEARTBEAT_EVENT;
         }
     }
 
     @Override
     public String toString() {
-        return "Request [id=" + mId + ", version=" + mVersion + ", twoway=" + mTwoWay + ", event=" + mEvent
+        return "Request [id=" + mId + ", version=" + mVersion + ", twoway=" + mTwoWay + ", heartBeat=" + mHeartBeat
                 + ", broken=" + mBroken + ", data=" + (mData == this ? "this" : safeToString(mData)) + "]";
     }
 }
