@@ -5,7 +5,7 @@ import cn.hutool.log.LogFactory;
 import com.meteor.common.core.StandardCharsets;
 import com.meteor.common.network.exchange.Request;
 import com.meteor.common.network.exchange.Response;
-import com.meteor.common.network.protocol.PacketBase;
+import com.meteor.common.network.exchange.RpcInfo;
 import com.meteor.common.serialize.Serializer;
 import com.meteor.common.serialize.kryo.KryoSerializer;
 import com.meteor.common.util.Assert;
@@ -32,7 +32,7 @@ public class ExchangeCodec extends ByteToMessageCodec<Object> {
     // request请求
     public static final byte FLAG_REQUEST = (byte) 0x80;
     // 心跳
-    public static final byte HEART_BEAT_EVENT = (byte) 0x40;
+    public static final byte FLAG_HEART_BEAT_EVENT = (byte) 0x40;
 
     private static final Serializer serializer = new KryoSerializer();
 
@@ -54,7 +54,7 @@ public class ExchangeCodec extends ByteToMessageCodec<Object> {
         byte flag = 0;
         flag |= FLAG_REQUEST;
         if (msg.isHeartbeat()) {
-            flag |= HEART_BEAT_EVENT;
+            flag |= FLAG_HEART_BEAT_EVENT;
         }
         out.writeByte(flag);
         // status
@@ -72,11 +72,15 @@ public class ExchangeCodec extends ByteToMessageCodec<Object> {
         }
     }
 
+    private void encodeRequestData(ChannelHandlerContext ctx, Object data, ByteBuf out) {
+        RpcInfo rpcInfo = (RpcInfo) data;
+    }
+
     protected void encodeResponse(ChannelHandlerContext ctx, Response res, ByteBuf out) {
         // flag
         byte flag = 0;
         if (res.isHeartbeat()) {
-            flag |= HEART_BEAT_EVENT;
+            flag |= FLAG_HEART_BEAT_EVENT;
         }
         out.writeByte(flag);
         // status
@@ -108,35 +112,43 @@ public class ExchangeCodec extends ByteToMessageCodec<Object> {
     protected void decode(ChannelHandlerContext ctx, ByteBuf buffer,
                           List<Object> out) throws Exception {
         try {
-//            if (buffer.readableBytes() < HEADER_SIZE) {
-//                return;
-//            }
+            if (buffer.readableBytes() < HEADER_LENGTH) {
+                return;
+            }
 
             buffer.markReaderIndex();
-            // 1.读取协议编号
-            byte packetType = buffer.readByte();
+            // 1.读取flag
+            byte flag = buffer.readByte();
+            boolean isHeartbeat = (flag & FLAG_HEART_BEAT_EVENT) != 0;
+            boolean isRequest = (flag & FLAG_REQUEST) != 0;
             // 2.读取状态码
-            byte code = buffer.readByte();
-            // 3.读取消息体长度(data的长度)
-            int contentLength = buffer.readInt();
+            byte status = buffer.readByte();
+            // 3.读取消息id
+            long invokeId = buffer.readLong();
 
+            if (isHeartbeat) {
+                return;
+            }
+            // 4. 读取data长度
+            int bodyLength = buffer.readInt();
             // TODO 如果dataLength过大，可能导致问题
             // TODO 对于拆包这种场景,由于还未读取到完整的消息,bufferIn.readableBytes() 会小于length,并重置bufferIn的readerIndex为0,然后退出,ByteToMessageDecoder会乖乖的等待下个包的到来。
             // TODO 由于第一次调用中readerIndex被重置为0,那么decode方法被调用第二次的时候,beginIndex还是为0的。
             // TODO https://blog.csdn.net/linsongbin1/article/details/77915686
-            if (buffer.readableBytes() < contentLength) {
+            if (buffer.readableBytes() < bodyLength) {
                 buffer.resetReaderIndex();
                 return;
             }
 
             // 4.读取消息体
-            byte[] body = new byte[contentLength];
+            byte[] body = new byte[bodyLength];
             buffer.readBytes(body);
-            String content = new String(body, StandardCharsets.UTF_8);
+            if (isRequest) {
+                RpcInfo rpcInfo = serializer.deserialize(body, RpcInfo.class);
+                out.add(rpcInfo);
+                System.out.println();
+            }
 
-
-            PacketBase packetBase = new PacketBase(packetType, code, content);
-            out.add(packetBase);
 
         } catch (Exception e) {
             log.error(e);

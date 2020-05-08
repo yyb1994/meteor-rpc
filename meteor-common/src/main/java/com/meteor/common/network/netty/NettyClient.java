@@ -62,7 +62,7 @@ public class NettyClient {
         return channel.isActive();
     }
 
-    Channel getChannel() {
+    public Channel getChannel() {
         return channel;
     }
 
