@@ -12,6 +12,7 @@ import java.util.List;
  * @time 2020-04-16
  */
 public interface GoodsBatchViewService {
+
     DataResult<List<GoodsCommonDTO>> goodsBatchQuery();
 
 }

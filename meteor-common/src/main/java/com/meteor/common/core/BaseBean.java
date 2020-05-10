@@ -1,5 +1,7 @@
 package com.meteor.common.core;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
 /**

@@ -1,4 +1,4 @@
-package com.meteor.common.test.beanUtil;
+package com.meteor.test.common.beanUtil;
 
 
 import java.lang.reflect.InvocationTargetException;

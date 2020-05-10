@@ -1,21 +1,20 @@
-package com.meteor.common.test.beanUtil;
+package com.meteor.test.common.beanUtil;
 
 
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
-@Data
 @Accessors(chain = true)
-public class UserDTO {
+@Data
+public class UserBO {
     private String name;
     private Integer age;
-    private String remark;
     private List<Ability> abilityList;
-    private UserDTO father;
-    private Date birthday;
+    private UserBO father;
+    private LocalDateTime birthday;
 
     @Data
     public static class Ability {
@@ -30,6 +29,4 @@ public class UserDTO {
             this.level = level;
         }
     }
-
-
 }

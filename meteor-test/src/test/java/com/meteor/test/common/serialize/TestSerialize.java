@@ -1,4 +1,4 @@
-package com.meteor.common.test.serialize;
+package com.meteor.test.common.serialize;
 
 
 import com.meteor.common.serialize.Serializer;

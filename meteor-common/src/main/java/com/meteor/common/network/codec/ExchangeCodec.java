@@ -67,7 +67,9 @@ public class ExchangeCodec extends ByteToMessageCodec<Object> {
         } else {
             //序列化消息体
             byte[] body = serializer.serialize(msg.getData());
+            //写入body 长度
             out.writeInt(body.length);
+            //写入body
             out.writeBytes(body);
         }
     }
@@ -146,10 +148,7 @@ public class ExchangeCodec extends ByteToMessageCodec<Object> {
             if (isRequest) {
                 RpcInfo rpcInfo = serializer.deserialize(body, RpcInfo.class);
                 out.add(rpcInfo);
-                System.out.println();
             }
-
-
         } catch (Exception e) {
             log.error(e);
         }

@@ -1,11 +1,11 @@
-package com.meteor.common.test.exchange;
+package com.meteor.test.common.exchange;
 
 
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
 import com.meteor.common.network.codec.ExchangeCodec;
 import com.meteor.common.network.exchange.Request;
-import com.meteor.common.test.serialize.Person;
+import com.meteor.test.common.serialize.Person;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
