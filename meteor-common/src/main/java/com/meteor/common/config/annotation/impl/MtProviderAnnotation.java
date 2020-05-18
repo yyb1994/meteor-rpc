@@ -21,8 +21,10 @@ public class MtProviderAnnotation {
         for (Class<?> c : reflections.getTypesAnnotatedWith(MtProvider.class)) {
             // 循环获取标记的注解
             MtProvider annotation = c.getAnnotation(MtProvider.class);
+
             // 打印注解中的内容
             System.out.println(annotation.interfaceName());
+            System.out.println(c.getSimpleName());
         }
     }
 
