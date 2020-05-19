@@ -1,30 +1,33 @@
 package com.meteor.test.common.config;
 
+import cn.hutool.log.Log;
+import cn.hutool.log.LogFactory;
 import com.meteor.common.config.annotation.MtProvider;
 import com.meteor.common.core.BaseBean;
-import com.meteor.common.util.ClasspathPackageUtils;
+import com.meteor.common.util.ClasspathPackageScannerUtils;
 import org.junit.jupiter.api.Test;
 import org.reflections.Reflections;
 import org.reflections.scanners.*;
 import org.reflections.util.ConfigurationBuilder;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.JarURLConnection;
+import java.lang.annotation.Annotation;
 import java.net.URL;
-import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 
 public class MtProviderAnnotationTest {
+    private static final Log log = LogFactory.get(ClasspathPackageScannerUtils.class);
     //MtProviderAnnotation annotation = new MtProviderAnnotation();
 
     @Test
     public void getAnnotationClass() throws IOException {
         String packageName = "com.meteor.test";
-        String filePath = ClasspathPackageUtils.getAbsPath(packageName);
+        URL url = ClasspathPackageScannerUtils.getAbsPathUrl(packageName);
+        if (url == null) {
+            return;
+        }
+        String filePath = url.getPath();
         //URL url = new URL(resourceName(packageName));
         // 扫包
         Reflections reflections = new Reflections(new ConfigurationBuilder()
@@ -70,100 +73,44 @@ public class MtProviderAnnotationTest {
      * https://www.cnblogs.com/juncaoit/p/7591778.html
      * https://blog.csdn.net/weixin_30765319/article/details/97853558
      * https://blog.csdn.net/wuminghua59920/article/details/84717103
+     *
      * @throws IOException
      */
     @Test
     public void testFileScanner() throws IOException {
         Set<Class> res = new HashSet<>();
         String packageName = "com.meteor.service";
-        String filePath = ClasspathPackageUtils.getAbsPath(packageName);
-        if (filePath == null) return;
-        File dir = new File(filePath);
-        String[] list = dir.list();
-        if (list == null) return;
-        for (String classPath : list) {
-            if (classPath.endsWith(".class")) {
-                classPath = classPath.replace(".class", "");
-                try {
-                    Class<?> aClass = Class.forName(packageName + "." + classPath);
-                    res.add(aClass);
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                res.addAll(getClasses(packageName + "." + classPath));
-            }
-        }
-        System.out.println(res.toString());
-    }
-
-    //从包路径下扫描
-    public static Set<Class> getClasses(String packagePath) {
-        Set<Class> res = new HashSet<>();
-        String path = packagePath.replace(".", "/");
-        URL url = Thread.currentThread().getContextClassLoader().getResource(path);
+        URL url = ClasspathPackageScannerUtils.getAbsPathUrl(packageName);
         if (url == null) {
-            System.out.println(packagePath + " is not exit");
-            return res;
+            return;
         }
-        String protocol = url.getProtocol();
-        if ("jar".equalsIgnoreCase(protocol)) {
-            try {
-                res.addAll(getJarClasses(url, packagePath));
-            } catch (IOException e) {
-                e.printStackTrace();
-                return res;
+        String filePath = url.getPath();
+        if (filePath == null) return;
+        res = ClasspathPackageScannerUtils.getFileClasses(url, packageName);
+//        File dir = new File(filePath);
+//        String[] list = dir.list();
+//        if (list == null) return;
+//        for (String classPath : list) {
+//            if (classPath.endsWith(".class")) {
+//                classPath = classPath.replace(".class", "");
+//                try {
+//                    Class<?> aClass = Class.forName(packageName + "." + classPath);
+//                    res.add(aClass);
+//                } catch (ClassNotFoundException e) {
+//                    e.printStackTrace();
+//                }
+//            } else {
+//                res.addAll(getClasses(packageName + "." + classPath));
+//            }
+//        }
+        System.out.println(res.toString());
+        for (Class cls:res){
+            Annotation[] annotations = cls.getDeclaredAnnotations();
+            for (Annotation annotation : annotations) {
+                log.info("通过class.getDeclaredAnnotations()获取全部的注解：" + annotation);
             }
-        } else if ("file".equalsIgnoreCase(protocol)) {
-            res.addAll(getFileClasses(url, packagePath));
         }
-        return res;
     }
 
-    //使用JarURLConnection类获取路径下的所有类
-    private static Set<Class> getJarClasses(URL url, String packagePath) throws IOException {
-        Set<Class> res = new HashSet<>();
-        JarURLConnection conn = (JarURLConnection) url.openConnection();
-        if (conn != null) {
-            JarFile jarFile = conn.getJarFile();
-            Enumeration<JarEntry> entries = jarFile.entries();
-            while (entries.hasMoreElements()) {
-                JarEntry jarEntry = entries.nextElement();
-                String name = jarEntry.getName();
-                if (name.contains(".class") && name.replaceAll("/", ".").startsWith(packagePath)) {
-                    String className = name.substring(0, name.lastIndexOf(".")).replace("/", ".");
-                    try {
-                        Class clazz = Class.forName(className);
-                        res.add(clazz);
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
-        return res;
-    }
 
-    //获取file路径下的class文件
-    private static Set<Class> getFileClasses(URL url, String packagePath) {
-        Set<Class> res = new HashSet<>();
-        String filePath = url.getFile();
-        File dir = new File(filePath);
-        String[] list = dir.list();
-        if (list == null) return res;
-        for (String classPath : list) {
-            if (classPath.endsWith(".class")) {
-                classPath = classPath.replace(".class", "");
-                try {
-                    Class<?> aClass = Class.forName(packagePath + "." + classPath);
-                    res.add(aClass);
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                res.addAll(getClasses(packagePath + "." + classPath));
-            }
-        }
-        return res;
-    }
 }
