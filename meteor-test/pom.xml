@@ -27,6 +27,11 @@
             <artifactId>meteor-service</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.meteor.server</groupId>
+            <artifactId>meteor-server</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <!-- Temporarily add this part to exclude transitive dependency -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>

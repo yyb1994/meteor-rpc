@@ -1,31 +1,49 @@
 package com.meteor.common.config.annotation.impl;
 
 import com.meteor.common.config.annotation.MtProvider;
+import com.meteor.common.util.ClasspathPackageScannerUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.checkerframework.checker.units.qual.A;
 import org.reflections.Reflections;
 import org.reflections.scanners.*;
 import org.reflections.util.ConfigurationBuilder;
 
+import java.lang.annotation.Annotation;
+import java.net.URL;
+import java.util.HashSet;
+import java.util.Set;
+
 public class MtProviderAnnotation {
 
     public static void scan(String... scanPackages) {
-        Reflections reflections = new Reflections(new ConfigurationBuilder()
-                .forPackages(scanPackages) // 指定路径URL
-                .addScanners(new SubTypesScanner()) // 添加子类扫描工具
-                .addScanners(new FieldAnnotationsScanner()) // 添加 属性注解扫描工具
-                .addScanners(new MethodAnnotationsScanner()) // 添加 方法注解扫描工具
-                .addScanners(new MethodParameterScanner()) // 添加方法参数扫描工具
-                .addScanners(new TypeAnnotationsScanner()) // 添加类注解扫描工具
-        );
+        Set<Class> classSetList = ClasspathPackageScannerUtils.getClassList(scanPackages);
+        Set<Class> annotationClassSetList = getClassListByAnnotation(classSetList);
+        annotationClassSetList.forEach(t->{
+            //获取类实现的接口 Interface
+            Class[] interfaces = t.getInterfaces();
+            if (interfaces.length==0){
+                return;
+            }
+            Class interClass=interfaces[0];
 
-        // 获取扫描到的标记注解的集合
-        for (Class<?> c : reflections.getTypesAnnotatedWith(MtProvider.class)) {
-            // 循环获取标记的注解
-            MtProvider annotation = c.getAnnotation(MtProvider.class);
+            for (Class inter : interfaces) {
 
-            // 打印注解中的内容
-            System.out.println(annotation.interfaceName());
-            System.out.println(c.getSimpleName());
-        }
+            }
+        });
+
+    }
+
+    public static Set<Class> getClassListByAnnotation(Class<? extends Annotation> clA,Set<Class> classSetList) {
+        Set<Class> classSet = new HashSet<>();
+        classSetList.forEach(cls -> {
+            Annotation[] annotations = cls.getDeclaredAnnotations();
+            for (Annotation an : annotations) {
+                if (an instanceof clA) {
+                    classSet.add(cls);
+                }
+            }
+        });
+        return classSet;
     }
 
 

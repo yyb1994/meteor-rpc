@@ -3,8 +3,11 @@ package com.meteor.test.common.config;
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
 import com.meteor.common.config.annotation.MtProvider;
+import com.meteor.common.config.annotation.impl.MtProviderAnnotation;
 import com.meteor.common.core.BaseBean;
 import com.meteor.common.util.ClasspathPackageScannerUtils;
+import com.meteor.server.impl.GoodsBatchViewServiceImpl;
+import com.meteor.service.goods.GoodsBatchViewService;
 import org.junit.jupiter.api.Test;
 import org.reflections.Reflections;
 import org.reflections.scanners.*;
@@ -78,38 +81,24 @@ public class MtProviderAnnotationTest {
      */
     @Test
     public void testFileScanner() throws IOException {
+        //GoodsBatchViewService goodsBatchViewService=new GoodsBatchViewServiceImpl();
         Set<Class> res = new HashSet<>();
-        String packageName = "com.meteor.service";
-        URL url = ClasspathPackageScannerUtils.getAbsPathUrl(packageName);
-        if (url == null) {
-            return;
-        }
-        String filePath = url.getPath();
-        if (filePath == null) return;
-        res = ClasspathPackageScannerUtils.getFileClasses(url, packageName);
-//        File dir = new File(filePath);
-//        String[] list = dir.list();
-//        if (list == null) return;
-//        for (String classPath : list) {
-//            if (classPath.endsWith(".class")) {
-//                classPath = classPath.replace(".class", "");
-//                try {
-//                    Class<?> aClass = Class.forName(packageName + "." + classPath);
-//                    res.add(aClass);
-//                } catch (ClassNotFoundException e) {
-//                    e.printStackTrace();
-//                }
-//            } else {
-//                res.addAll(getClasses(packageName + "." + classPath));
-//            }
-//        }
+        String packageName = "com.meteor.server.impl";
+        res = ClasspathPackageScannerUtils.getClassList(packageName);
         System.out.println(res.toString());
         for (Class cls:res){
             Annotation[] annotations = cls.getDeclaredAnnotations();
             for (Annotation annotation : annotations) {
                 log.info("通过class.getDeclaredAnnotations()获取全部的注解：" + annotation);
             }
+            //获取类实现的接口 Interface
+            Class[] interfaces = cls.getInterfaces();
+            for (Class inter : interfaces) {
+                log.info("通过class.getInterfaces()获取类实现的接口：" + inter);
+            }
+
         }
+        System.out.println(MtProviderAnnotation.getClassListByAnnotation(res).toString());
     }
 
 

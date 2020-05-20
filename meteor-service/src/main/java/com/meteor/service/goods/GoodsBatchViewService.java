@@ -1,5 +1,6 @@
 package com.meteor.service.goods;
 
+import com.meteor.common.config.annotation.MtProvider;
 import com.meteor.common.core.DataResult;
 import com.meteor.service.goods.dto.GoodsCommonDTO;
 
@@ -11,6 +12,7 @@ import java.util.List;
  * @author SuperMu
  * @time 2020-04-16
  */
+@MtProvider
 public interface GoodsBatchViewService {
 
     DataResult<List<GoodsCommonDTO>> goodsBatchQuery();

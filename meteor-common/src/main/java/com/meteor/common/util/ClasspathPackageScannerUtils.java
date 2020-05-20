@@ -17,6 +17,22 @@ import java.util.jar.JarFile;
 public class ClasspathPackageScannerUtils {
     private static final Log log = LogFactory.get(ClasspathPackageScannerUtils.class);
 
+    public static Set<Class> getClassList(String... scanPackages) {
+        Set<Class> classSetList = new HashSet<>();
+        for (String packageName : scanPackages) {
+            URL url = ClasspathPackageScannerUtils.getAbsPathUrl(packageName);
+            if (url == null) {
+                continue;
+            }
+            String filePath = url.getPath();
+            if (filePath == null) {
+                continue;
+            }
+            classSetList.addAll(ClasspathPackageScannerUtils.getFileClasses(url, packageName));
+        }
+        return classSetList;
+    }
+
     public static URL getAbsPathUrl(String path) {
         System.out.println(ClasspathHelper.forPackage(path));
 //        final ClassLoader[] loaders = ClasspathHelper.classLoaders();
@@ -24,7 +40,7 @@ public class ClasspathPackageScannerUtils {
 //            return null;
 //        }
 //        ClassLoader classLoader = loaders[0];
-        ClassLoader classLoader= ClasspathHelper.contextClassLoader();
+        ClassLoader classLoader = ClasspathHelper.contextClassLoader();
         final Enumeration<URL> urls;
         try {
             urls = classLoader.getResources(resourceName(path));
