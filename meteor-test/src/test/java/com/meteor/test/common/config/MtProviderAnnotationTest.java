@@ -5,9 +5,7 @@ import cn.hutool.log.LogFactory;
 import com.meteor.common.config.annotation.MtProvider;
 import com.meteor.common.config.annotation.impl.MtProviderAnnotation;
 import com.meteor.common.core.BaseBean;
-import com.meteor.common.util.ClasspathPackageScannerUtils;
-import com.meteor.server.impl.GoodsBatchViewServiceImpl;
-import com.meteor.service.goods.GoodsBatchViewService;
+import com.meteor.common.util.ClasspathScannerUtils;
 import org.junit.jupiter.api.Test;
 import org.reflections.Reflections;
 import org.reflections.scanners.*;
@@ -20,13 +18,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class MtProviderAnnotationTest {
-    private static final Log log = LogFactory.get(ClasspathPackageScannerUtils.class);
+    private static final Log log = LogFactory.get(ClasspathScannerUtils.class);
     //MtProviderAnnotation annotation = new MtProviderAnnotation();
 
     @Test
     public void getAnnotationClass() throws IOException {
         String packageName = "com.meteor.test";
-        URL url = ClasspathPackageScannerUtils.getAbsPathUrl(packageName);
+        URL url = ClasspathScannerUtils.getAbsPathUrl(packageName);
         if (url == null) {
             return;
         }
@@ -84,7 +82,7 @@ public class MtProviderAnnotationTest {
         //GoodsBatchViewService goodsBatchViewService=new GoodsBatchViewServiceImpl();
         Set<Class> res = new HashSet<>();
         String packageName = "com.meteor.server.impl";
-        res = ClasspathPackageScannerUtils.getClassList(packageName);
+        res = ClasspathScannerUtils.getClassList(packageName);
         System.out.println(res.toString());
         for (Class cls:res){
             Annotation[] annotations = cls.getDeclaredAnnotations();

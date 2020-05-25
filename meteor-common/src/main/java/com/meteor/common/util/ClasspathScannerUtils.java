@@ -14,13 +14,13 @@ import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-public class ClasspathPackageScannerUtils {
-    private static final Log log = LogFactory.get(ClasspathPackageScannerUtils.class);
+public class ClasspathScannerUtils {
+    private static final Log log = LogFactory.get(ClasspathScannerUtils.class);
 
     public static Set<Class> getClassList(String... scanPackages) {
         Set<Class> classSetList = new HashSet<>();
         for (String packageName : scanPackages) {
-            URL url = ClasspathPackageScannerUtils.getAbsPathUrl(packageName);
+            URL url = ClasspathScannerUtils.getAbsPathUrl(packageName);
             if (url == null) {
                 continue;
             }
@@ -28,7 +28,7 @@ public class ClasspathPackageScannerUtils {
             if (filePath == null) {
                 continue;
             }
-            classSetList.addAll(ClasspathPackageScannerUtils.getFileClasses(url, packageName));
+            classSetList.addAll(ClasspathScannerUtils.getFileClasses(url, packageName));
         }
         return classSetList;
     }
