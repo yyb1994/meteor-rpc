@@ -13,10 +13,9 @@
 
     <modules>
         <module>meteor-common</module>
-        <module>meteor-server</module>
-        <module>meteor-client</module>
-        <module>meteor-service</module>
+
         <module>meteor-test</module>
+        <module>meteor-demo</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
