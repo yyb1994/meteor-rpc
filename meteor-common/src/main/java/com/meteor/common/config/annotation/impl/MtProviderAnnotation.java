@@ -5,6 +5,7 @@ import com.meteor.common.config.annotation.MtProvider;
 import com.meteor.common.config.annotation.ServiceBeanNameBuilder;
 import com.meteor.common.core.CommonConstants;
 import com.meteor.common.util.ClasspathScannerUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.annotation.AnnotationUtils;
 
@@ -16,6 +17,7 @@ import java.util.Set;
 import static java.util.Arrays.asList;
 import static org.springframework.core.annotation.AnnotationUtils.getAnnotationAttributes;
 
+@Slf4j
 public class MtProviderAnnotation {
 
     private final static List<Class<? extends Annotation>> SERVICE_ANNOTATION_LIST = asList(
@@ -43,6 +45,11 @@ public class MtProviderAnnotation {
         String beanName = ServiceBeanNameBuilder.generateServiceBeanName(serviceAnnotationAttributes, interClass);
         //注入到Map中
         CommonConstants.Server.REGISTER_SERVICE_MAP.put(beanName, interClass);
+        if (log.isInfoEnabled()) {
+            log.info("The Bean[" + beanClass.getName() +
+                    "] of ServiceBean has been registered with name : " + beanName);
+        }
+
     }
 
 

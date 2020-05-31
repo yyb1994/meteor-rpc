@@ -1,10 +1,13 @@
 package com.meteor.test.common.serialize;
 
 
+import com.meteor.common.log.LogUtils;
+import com.meteor.common.log.Logger;
 import com.meteor.common.serialize.Serializer;
 import com.meteor.common.serialize.json.FastJsonSerializer;
 import com.meteor.common.serialize.json.GsonSerializer;
 import com.meteor.common.serialize.kryo.KryoSerializer;
+import com.meteor.test.common.exchange.ExchangeCodecTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 public class TestSerialize {
+    private static final Logger log = LogUtils.getLogger(ExchangeCodecTest.class);
     Person person = null;
 
     @BeforeEach
@@ -28,6 +32,8 @@ public class TestSerialize {
         personList.add(new Person("小莉", 11, "爱跳舞，活泼开朗",
                 LocalDateTime.of(2007, 4, 11, 11, 10, 55)));
         person.setSonList(personList);
+        log.info(person.toString());
+
     }
 
     @Test

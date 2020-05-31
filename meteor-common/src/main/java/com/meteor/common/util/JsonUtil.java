@@ -1,8 +1,8 @@
 package com.meteor.common.util;
 
-import cn.hutool.log.Log;
-import cn.hutool.log.LogFactory;
 import com.meteor.common.core.StandardCharsets;
+import com.meteor.common.log.LogUtils;
+import com.meteor.common.log.Logger;
 import com.meteor.common.serialize.Serializer;
 import com.meteor.common.serialize.json.GsonSerializer;
 
@@ -17,7 +17,7 @@ import java.util.Objects;
  * @time 2019-07-07
  */
 public class JsonUtil {
-    private static final Log log = LogFactory.get();
+    private static final Logger log = LogUtils.getLogger(JsonUtil.class);
     private static final Serializer serializer = new GsonSerializer();
 
     /**

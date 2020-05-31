@@ -1,8 +1,8 @@
 package com.meteor.common.network.netty;
 
-import cn.hutool.log.Log;
-import cn.hutool.log.LogFactory;
 import com.meteor.common.core.CommonConstants;
+import com.meteor.common.log.LogUtils;
+import com.meteor.common.log.Logger;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.ChannelFuture;
@@ -20,7 +20,7 @@ import java.net.InetSocketAddress;
  */
 public class NettyServer {
 
-    private static final Log log = LogFactory.get(NettyServer.class);
+    private static final Logger log = LogUtils.getLogger(NettyServer.class);
 
     private final int socketPort;
 

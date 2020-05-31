@@ -1,8 +1,8 @@
 package com.meteor.test.common.exchange;
 
 
-import cn.hutool.log.Log;
-import cn.hutool.log.LogFactory;
+import com.meteor.common.log.LogUtils;
+import com.meteor.common.log.Logger;
 import com.meteor.common.network.codec.ExchangeCodec;
 import com.meteor.common.network.exchange.Request;
 import com.meteor.test.common.serialize.Person;
@@ -16,7 +16,8 @@ import static com.meteor.common.network.codec.ExchangeCodec.FLAG_HEART_BEAT_EVEN
 import static com.meteor.common.network.codec.ExchangeCodec.FLAG_REQUEST;
 
 public class ExchangeCodecTest {
-    private static final Log log = LogFactory.get(ExchangeCodec.class);
+    private static final Logger log = LogUtils.getLogger(ExchangeCodecTest.class);
+
     ExchangeCodec codec = new ExchangeCodec();
 
     @BeforeEach

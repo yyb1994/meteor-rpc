@@ -1,10 +1,10 @@
 package com.meteor.test.common.config;
 
-import cn.hutool.log.Log;
-import cn.hutool.log.LogFactory;
 import com.meteor.common.config.annotation.MtProvider;
 import com.meteor.common.config.annotation.impl.MtProviderAnnotation;
 import com.meteor.common.core.BaseBean;
+import com.meteor.common.log.LogUtils;
+import com.meteor.common.log.Logger;
 import com.meteor.common.util.ClasspathScannerUtils;
 import org.junit.jupiter.api.Test;
 import org.reflections.Reflections;
@@ -18,7 +18,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class MtProviderAnnotationTest {
-    private static final Log log = LogFactory.get(ClasspathScannerUtils.class);
+    private static final Logger log = LogUtils.getLogger(MtProviderAnnotationTest.class);
     //MtProviderAnnotation annotation = new MtProviderAnnotation();
 
     @Test

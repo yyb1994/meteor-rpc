@@ -1,8 +1,8 @@
 package com.meteor.server.netty.command;
 
-import cn.hutool.log.Log;
-import cn.hutool.log.LogFactory;
 import com.meteor.common.exception.CommonException;
+import com.meteor.common.log.LogUtils;
+import com.meteor.common.log.Logger;
 import com.meteor.common.network.protocol.PacketBase;
 import com.meteor.server.netty.session.HallSession;
 
@@ -13,7 +13,7 @@ import com.meteor.server.netty.session.HallSession;
  * @Date: 2018/7/26  15:52D
  */
 public class HallCmdProc {
-    private static final Log log = LogFactory.get(HallCmdProc.class);
+    private static final Logger log = LogUtils.getLogger(HallCmdProc.class);
 
     public static class SingletonHolder{
         private static final HallCmdProc INSTANCE=new HallCmdProc();

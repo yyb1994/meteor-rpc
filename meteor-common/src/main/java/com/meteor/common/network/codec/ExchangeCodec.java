@@ -1,8 +1,8 @@
 package com.meteor.common.network.codec;
 
-import cn.hutool.log.Log;
-import cn.hutool.log.LogFactory;
 import com.meteor.common.core.StandardCharsets;
+import com.meteor.common.log.LogUtils;
+import com.meteor.common.log.Logger;
 import com.meteor.common.network.exchange.Request;
 import com.meteor.common.network.exchange.Response;
 import com.meteor.common.network.exchange.RpcInfo;
@@ -12,6 +12,7 @@ import com.meteor.common.util.Assert;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageCodec;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -25,7 +26,8 @@ import java.util.List;
  * @time 2020-04-19
  */
 public class ExchangeCodec extends ByteToMessageCodec<Object> {
-    private static final Log log = LogFactory.get(ExchangeCodec.class);
+    //    private static final Logger log = Loggerf.get(ExchangeCodec.class);
+    private static final Logger log = LogUtils.getLogger(ExchangeCodec.class);
     // header length.
     protected static final int HEADER_LENGTH = 14;
     // message flag.

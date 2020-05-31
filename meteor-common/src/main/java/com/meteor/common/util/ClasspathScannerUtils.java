@@ -1,7 +1,7 @@
 package com.meteor.common.util;
 
-import cn.hutool.log.Log;
-import cn.hutool.log.LogFactory;
+import com.meteor.common.log.LogUtils;
+import com.meteor.common.log.Logger;
 import org.reflections.util.ClasspathHelper;
 
 import java.io.File;
@@ -15,7 +15,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 public class ClasspathScannerUtils {
-    private static final Log log = LogFactory.get(ClasspathScannerUtils.class);
+    private static final Logger log = LogUtils.getLogger(ClasspathScannerUtils.class);
 
     public static Set<Class> getClassList(String... scanPackages) {
         Set<Class> classSetList = new HashSet<>();

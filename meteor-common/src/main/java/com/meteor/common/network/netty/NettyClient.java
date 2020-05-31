@@ -1,9 +1,9 @@
 package com.meteor.common.network.netty;
 
 
-import cn.hutool.log.Log;
-import cn.hutool.log.LogFactory;
 import com.meteor.common.core.CommonConstants;
+import com.meteor.common.log.LogUtils;
+import com.meteor.common.log.Logger;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.Channel;
@@ -23,7 +23,7 @@ import static com.meteor.common.network.netty.NettyEventLoopFactory.socketChanne
  * @time 2020-04-18
  */
 public class NettyClient {
-    private static final Log log = LogFactory.get(NettyClient.class);
+    private static final Logger log = LogUtils.getLogger(NettyClient.class);
     private Bootstrap bootstrap;
     private volatile Channel channel;
     private final ChannelHandler serverChannel;

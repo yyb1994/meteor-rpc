@@ -1,10 +1,11 @@
 package com.meteor.common.exception;
 
-import cn.hutool.core.util.StrUtil;
 import com.meteor.common.core.ResultEnum;
+import com.meteor.common.util.StrFormatter;
 import lombok.Getter;
 
 import java.io.Serializable;
+import java.text.MessageFormat;
 
 /**
  * 通用异常
@@ -40,7 +41,9 @@ public class CommonException extends RuntimeException implements Serializable {
 
     public CommonException(ResultEnum eum, Object... params) {
 //        super(eum.name() + " | " + StrUtil.format(eum.getMsg(), params));
-        super(StrUtil.format(eum.getMsg(), params));
+        //super(StrUtil.format(eum.getMsg(), params));
+        //super(MessageFormat.format(eum.getMsg(), params));
+        super(StrFormatter.format(eum.getMsg(), params));
         this.code = eum.getCode();
     }
 

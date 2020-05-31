@@ -18,6 +18,7 @@
 package com.meteor.common.util;
 
 import com.google.common.base.Preconditions;
+import org.apache.commons.lang3.StringUtils;
 
 public abstract class Assert {
 
@@ -25,18 +26,15 @@ public abstract class Assert {
     }
 
     public static void notNull(Object obj) {
-        cn.hutool.core.lang.Assert.notNull(obj);
+       Preconditions.checkNotNull(obj);
     }
 
     public static void notNull(Object obj, String message) {
-        cn.hutool.core.lang.Assert.notNull(obj, message);
+        Preconditions.checkNotNull(obj,message);
     }
 
     public static void notEmptyString(String str, String message) {
-        cn.hutool.core.lang.Assert.notBlank(str, message);
-    }
-
-    public static void equals(Object expected, Object actual) {
+        Preconditions.checkArgument(StringUtils.isNotBlank(str),message);
     }
 
     public static void isTrue(boolean expression, String message) {

@@ -1,7 +1,7 @@
 package com.meteor.server.netty.handler;
 
-import cn.hutool.log.Log;
-import cn.hutool.log.LogFactory;
+import com.meteor.common.log.LogUtils;
+import com.meteor.common.log.Logger;
 import com.meteor.common.network.handler.BaseHandler;
 import com.meteor.common.network.protocol.PacketBase;
 import com.meteor.server.netty.command.HallCmdProc;
@@ -15,6 +15,7 @@ import io.netty.util.AttributeKey;
 
 @ChannelHandler.Sharable
 public class SocketHandler extends ChannelInboundHandlerAdapter implements BaseHandler<Object> {
+    private static final Logger log = LogUtils.getLogger(SocketHandler.class);
 
     public static class SingletonHolder {
         private static final SocketHandler INSTANCE = new SocketHandler();
@@ -23,8 +24,6 @@ public class SocketHandler extends ChannelInboundHandlerAdapter implements BaseH
     public static SocketHandler getInstance() {
         return SingletonHolder.INSTANCE;
     }
-
-    private static final Log log = LogFactory.get();
 
     /**
      * channel 存储

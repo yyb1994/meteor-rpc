@@ -1,8 +1,8 @@
 package com.meteor.client.netty.handler;
 
 
-import cn.hutool.log.Log;
-import cn.hutool.log.LogFactory;
+import com.meteor.common.log.LogUtils;
+import com.meteor.common.log.Logger;
 import com.meteor.common.network.protocol.PacketBase;
 import com.meteor.common.network.protocol.PacketType;
 import io.netty.channel.ChannelHandlerContext;
@@ -15,7 +15,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
  * @Date: 2018/8/22  16:01
  */
 public class ClientHandler extends ChannelInboundHandlerAdapter {
-    private static final Log log = LogFactory.get();
+    private static final Logger log = LogUtils.getLogger(ClientHandler.class);
 
     private static class SingletonHolder {
         private static final ClientHandler INSTANCE = new ClientHandler();

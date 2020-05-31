@@ -1,10 +1,10 @@
 package com.meteor.common.util;
 
 
-import cn.hutool.log.Log;
-import cn.hutool.log.LogFactory;
 import com.meteor.common.core.ResultEnum;
 import com.meteor.common.exception.CommonException;
+import com.meteor.common.log.LogUtils;
+import com.meteor.common.log.Logger;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.ObjectUtils;
 
@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
  * @time 2019-06-14
  */
 public class BeanUtil {
-    private static final Log log = LogFactory.get();
+    private static final Logger log = LogUtils.getLogger(BeanUtil.class);
 
     /**
      * 批量复制List
