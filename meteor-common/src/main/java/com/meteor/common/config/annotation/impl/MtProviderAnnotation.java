@@ -4,8 +4,9 @@ import com.meteor.common.config.annotation.AnnotationBeanUtils;
 import com.meteor.common.config.annotation.MtProvider;
 import com.meteor.common.config.annotation.ServiceBeanNameBuilder;
 import com.meteor.common.core.CommonConstants;
+import com.meteor.common.log.LogUtils;
+import com.meteor.common.log.Logger;
 import com.meteor.common.util.ClasspathScannerUtils;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.annotation.AnnotationUtils;
 
@@ -17,9 +18,8 @@ import java.util.Set;
 import static java.util.Arrays.asList;
 import static org.springframework.core.annotation.AnnotationUtils.getAnnotationAttributes;
 
-@Slf4j
 public class MtProviderAnnotation {
-
+    private static final Logger log = LogUtils.getLogger(MtProviderAnnotation.class);
     private final static List<Class<? extends Annotation>> SERVICE_ANNOTATION_LIST = asList(
             MtProvider.class
     );
