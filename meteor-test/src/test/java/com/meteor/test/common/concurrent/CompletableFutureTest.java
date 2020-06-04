@@ -1,10 +1,13 @@
 package com.meteor.test.common.concurrent;
 
 import cn.hutool.core.date.DateTime;
+import com.meteor.common.util.NameThreadFactory;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * CompletableFuture测试类
@@ -70,5 +73,13 @@ public class CompletableFutureTest {
             return element+"  addTwoPart";
         });
         System.out.println(future3.get());//hello world  addPart  addTwoPart
+    }
+
+    @Test
+    public void executorServiceTest() throws Exception{
+        ExecutorService executorService= Executors.newFixedThreadPool(5,new NameThreadFactory("CompleteTest"));
+        final CompletableFuture<Integer> f = compute();
+
+        f.complete(100,executorService);
     }
 }
