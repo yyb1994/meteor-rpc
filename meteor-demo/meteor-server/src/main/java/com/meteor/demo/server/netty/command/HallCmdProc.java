@@ -1,6 +1,6 @@
 package com.meteor.demo.server.netty.command;
 
-import com.meteor.common.exception.CommonException;
+import com.meteor.common.rpc.exception.CommonException;
 import com.meteor.common.log.LogUtils;
 import com.meteor.common.log.Logger;
 import com.meteor.common.network.protocol.PacketBase;

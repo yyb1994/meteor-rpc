@@ -1,7 +1,7 @@
 package com.meteor.demo.server.impl;
 
 import com.meteor.common.config.annotation.MtProvider;
-import com.meteor.common.core.DataResult;
+import com.meteor.common.rpc.DataResult;
 import com.meteor.demo.service.goods.GoodsBatchViewService;
 import com.meteor.demo.service.goods.dto.GoodsCommonDTO;
 import lombok.extern.slf4j.Slf4j;

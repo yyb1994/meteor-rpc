@@ -2,7 +2,7 @@ package com.meteor.test.common.config;
 
 import com.meteor.common.config.annotation.MtProvider;
 import com.meteor.common.config.annotation.impl.MtProviderAnnotation;
-import com.meteor.common.core.BaseBean;
+import com.meteor.common.rpc.BaseBean;
 import com.meteor.common.log.LogUtils;
 import com.meteor.common.log.Logger;
 import com.meteor.common.util.ClasspathScannerUtils;

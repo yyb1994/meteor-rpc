@@ -1,6 +1,6 @@
 package com.meteor.common.util.page;
 
-import com.meteor.common.core.BaseBean;
+import com.meteor.common.rpc.BaseBean;
 import lombok.Getter;
 import lombok.Setter;
 

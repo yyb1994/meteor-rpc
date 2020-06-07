@@ -1,9 +1,8 @@
-package com.meteor.common.util;
+package com.meteor.common.serialize;
 
 import com.meteor.common.core.StandardCharsets;
 import com.meteor.common.log.LogUtils;
 import com.meteor.common.log.Logger;
-import com.meteor.common.serialize.Serializer;
 import com.meteor.common.serialize.json.GsonSerializer;
 
 import java.util.List;

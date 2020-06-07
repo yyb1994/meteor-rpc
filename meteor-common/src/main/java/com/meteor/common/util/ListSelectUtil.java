@@ -1,12 +1,12 @@
 package com.meteor.common.util;
 
 
-import com.meteor.common.exception.CommonException;
+import com.meteor.common.rpc.exception.CommonException;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.List;
 
-import static com.meteor.common.core.ResultEnum.SELECT_LIST_ERROR;
+import static com.meteor.common.rpc.ResultEnum.SELECT_LIST_ERROR;
 
 
 /**

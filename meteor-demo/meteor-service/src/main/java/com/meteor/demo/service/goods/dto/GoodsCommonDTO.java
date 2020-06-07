@@ -1,6 +1,6 @@
 package com.meteor.demo.service.goods.dto;
 
-import com.meteor.common.core.BaseBean;
+import com.meteor.common.rpc.BaseBean;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

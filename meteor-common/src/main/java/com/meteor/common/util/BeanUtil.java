@@ -1,8 +1,8 @@
 package com.meteor.common.util;
 
 
-import com.meteor.common.core.ResultEnum;
-import com.meteor.common.exception.CommonException;
+import com.meteor.common.rpc.ResultEnum;
+import com.meteor.common.rpc.exception.CommonException;
 import com.meteor.common.log.LogUtils;
 import com.meteor.common.log.Logger;
 import org.apache.commons.lang3.ClassUtils;

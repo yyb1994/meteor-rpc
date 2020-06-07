@@ -1,11 +1,10 @@
-package com.meteor.common.exception;
+package com.meteor.common.rpc.exception;
 
-import com.meteor.common.core.ResultEnum;
+import com.meteor.common.rpc.ResultEnum;
 import com.meteor.common.util.StrFormatter;
 import lombok.Getter;
 
 import java.io.Serializable;
-import java.text.MessageFormat;
 
 /**
  * 通用异常

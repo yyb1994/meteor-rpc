@@ -1,4 +1,4 @@
-package com.meteor.common.core;
+package com.meteor.common.rpc;
 
 import lombok.Getter;
 
