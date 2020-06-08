@@ -81,7 +81,7 @@ public class MtProviderAnnotationTest {
     public void testFileScanner() throws IOException {
         //GoodsBatchViewService goodsBatchViewService=new GoodsBatchViewServiceImpl();
         Set<Class> res = new HashSet<>();
-        String packageName = "com.meteor.server.impl";
+        String packageName = "com.meteor.demo.server.impl";
         res = ClasspathScannerUtils.getClassList(packageName);
         System.out.println(res.toString());
         for (Class cls:res){

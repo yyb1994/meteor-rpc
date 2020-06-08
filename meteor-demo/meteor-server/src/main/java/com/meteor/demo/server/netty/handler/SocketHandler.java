@@ -3,8 +3,6 @@ package com.meteor.demo.server.netty.handler;
 import com.meteor.common.log.LogUtils;
 import com.meteor.common.log.Logger;
 import com.meteor.common.network.handler.BaseHandler;
-import com.meteor.common.network.protocol.PacketBase;
-import com.meteor.demo.server.netty.command.HallCmdProc;
 import com.meteor.demo.server.netty.session.HallSession;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
@@ -70,10 +68,7 @@ public class SocketHandler extends ChannelInboundHandlerAdapter implements BaseH
     //处理消息
     @Override
     public void decodeMsg(ChannelHandlerContext ctx, Object msg) {
-        PacketBase packet = (PacketBase) msg;
-        HallSession session = (HallSession) ctx.channel().attr(SESSION_ATTRIBUTE_KEY).get();
-        session.lastActiveTime = System.currentTimeMillis();
-        HallCmdProc.getInstance().handleMsg(packet, session);
+
     }
 
 

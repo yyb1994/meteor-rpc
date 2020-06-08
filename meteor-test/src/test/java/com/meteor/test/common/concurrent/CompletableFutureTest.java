@@ -4,13 +4,11 @@ import cn.hutool.core.date.DateTime;
 import com.meteor.common.util.NameThreadFactory;
 import org.junit.jupiter.api.Test;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 /**
  * CompletableFuture测试类
+ *
  * @author SuperMu
  * @time 2020-06-03
  * 参考链接：https://colobu.com/2016/02/29/Java-CompletableFuture/
@@ -67,19 +65,37 @@ public class CompletableFutureTest {
         System.out.println(handF.get());
         Thread.sleep(1000);
         //当计算结算完成之后,后面可以接继续一系列的thenApply,来完成值的转化.
-        CompletableFuture<String> future3 = f.thenApply((element)->{
-            return element+"  addPart";
-        }).thenApply((element)->{
-            return element+"  addTwoPart";
+        CompletableFuture<String> future3 = f.thenApply((element) -> {
+            return element + "  addPart";
+        }).thenApply((element) -> {
+            return element + "  addTwoPart";
         });
         System.out.println(future3.get());//hello world  addPart  addTwoPart
     }
 
     @Test
-    public void executorServiceTest() throws Exception{
-        ExecutorService executorService= Executors.newFixedThreadPool(5,new NameThreadFactory("CompleteTest"));
+    public void executorServiceTest() throws Exception {
+        ExecutorService executorService = Executors.newFixedThreadPool(5, new NameThreadFactory("CompleteTest"));
+        CountDownLatch countDownLatch = new CountDownLatch(1);
         final CompletableFuture<Integer> f = compute();
 
-        f.complete(100,executorService);
+        f.complete(100);
+
+        f.whenCompleteAsync((v, e) -> {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+            System.out.println(Thread.currentThread().getName() + ": " + "whenCompleteAsync:return value:" + v + "  exception:" + e);
+            countDownLatch.countDown();
+        }, executorService);
+
+        f.thenRunAsync(() -> {
+            System.out.println(Thread.currentThread().getName() + ": " + "thenRunAsync" );
+        }, executorService);
+        countDownLatch.await();
+        //countDownLatch.await(500,TimeUnit.MILLISECONDS);
+        System.out.println(222);
     }
 }
