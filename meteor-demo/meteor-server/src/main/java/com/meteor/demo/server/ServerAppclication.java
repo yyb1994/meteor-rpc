@@ -2,7 +2,7 @@ package com.meteor.demo.server;
 
 import com.meteor.common.config.annotation.impl.MtProviderAnnotation;
 import com.meteor.common.network.netty.NettyServer;
-import com.meteor.demo.server.netty.channel.SocketServerChannel;
+import com.meteor.common.network.netty.channel.SocketServerChannel;
 
 /**
  * 启动器

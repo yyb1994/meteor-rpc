@@ -1,14 +1,11 @@
-package com.meteor.demo.server.netty.handler;
+package com.meteor.common.network.netty.handler;
 
 import com.meteor.common.log.LogUtils;
 import com.meteor.common.log.Logger;
-import com.meteor.common.network.handler.BaseHandler;
-import com.meteor.demo.server.netty.session.HallSession;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.util.AttributeKey;
 
 
 @ChannelHandler.Sharable
@@ -22,11 +19,6 @@ public class SocketHandler extends ChannelInboundHandlerAdapter implements BaseH
     public static SocketHandler getInstance() {
         return SingletonHolder.INSTANCE;
     }
-
-    /**
-     * channel 存储
-     */
-    public final static AttributeKey<HallSession> SESSION_ATTRIBUTE_KEY = AttributeKey.newInstance("SocketHandler.HallSessionKey");
 
 
     //接收消息
@@ -73,24 +65,12 @@ public class SocketHandler extends ChannelInboundHandlerAdapter implements BaseH
 
 
     @Override
-    public void initWhenConnected(ChannelHandlerContext ctx) { HallSession session = new HallSession();
-        session.channel = ctx.channel();
-        session.initTime = System.currentTimeMillis();
-        session.sessionId = SESSION_ID_ATOMIC_INTEGER.incrementAndGet();
+    public void initWhenConnected(ChannelHandlerContext ctx) {
 
-        ctx.channel().attr(SESSION_ATTRIBUTE_KEY).set(session);
     }
 
     @Override
     public void cleanWhenClosed(ChannelHandlerContext ctx) {
-        HallSession session = ctx.channel().attr(SESSION_ATTRIBUTE_KEY).get();
-        if (session != null) {
-            onSessionClosed(session, ctx);
-            ctx.channel().attr(SESSION_ATTRIBUTE_KEY).set(null);
-        }
-    }
-
-    private void onSessionClosed(HallSession session, ChannelHandlerContext ctx) {
 
     }
 

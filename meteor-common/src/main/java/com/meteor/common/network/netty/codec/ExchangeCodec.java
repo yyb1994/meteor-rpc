@@ -1,4 +1,4 @@
-package com.meteor.common.network.codec;
+package com.meteor.common.network.netty.codec;
 
 import com.meteor.common.core.StandardCharsets;
 import com.meteor.common.log.LogUtils;
@@ -12,7 +12,6 @@ import com.meteor.common.util.Assert;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageCodec;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 

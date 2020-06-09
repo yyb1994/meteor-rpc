@@ -1,4 +1,4 @@
-package com.meteor.common.network.handler;
+package com.meteor.common.network.netty.handler;
 
 
 import io.netty.channel.ChannelHandlerContext;

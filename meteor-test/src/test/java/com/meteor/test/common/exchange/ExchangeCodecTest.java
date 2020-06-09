@@ -3,7 +3,7 @@ package com.meteor.test.common.exchange;
 
 import com.meteor.common.log.LogUtils;
 import com.meteor.common.log.Logger;
-import com.meteor.common.network.codec.ExchangeCodec;
+import com.meteor.common.network.netty.codec.ExchangeCodec;
 import com.meteor.common.network.exchange.Request;
 import com.meteor.test.common.serialize.Person;
 import io.netty.buffer.ByteBuf;
@@ -12,8 +12,8 @@ import io.netty.channel.ChannelHandlerContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static com.meteor.common.network.codec.ExchangeCodec.FLAG_HEART_BEAT_EVENT;
-import static com.meteor.common.network.codec.ExchangeCodec.FLAG_REQUEST;
+import static com.meteor.common.network.netty.codec.ExchangeCodec.FLAG_HEART_BEAT_EVENT;
+import static com.meteor.common.network.netty.codec.ExchangeCodec.FLAG_REQUEST;
 
 public class ExchangeCodecTest {
     private static final Logger log = LogUtils.getLogger(ExchangeCodecTest.class);

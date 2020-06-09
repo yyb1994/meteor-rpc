@@ -1,7 +1,7 @@
-package com.meteor.demo.client.netty.channel;
+package com.meteor.common.network.netty.channel;
 
-import com.meteor.common.network.codec.ExchangeCodec;
-import com.meteor.demo.client.netty.handler.ClientHandler;
+import com.meteor.common.network.netty.codec.ExchangeCodec;
+import com.meteor.common.network.netty.handler.ClientHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;

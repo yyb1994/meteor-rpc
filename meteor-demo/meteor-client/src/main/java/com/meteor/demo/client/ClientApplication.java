@@ -1,9 +1,9 @@
 package com.meteor.demo.client;
 
-import com.meteor.client.netty.channel.SocketClinetChannel;
 import com.meteor.common.network.exchange.Request;
 import com.meteor.common.network.exchange.RpcInfo;
 import com.meteor.common.network.netty.NettyClient;
+import com.meteor.common.network.netty.channel.SocketClinetChannel;
 
 import java.net.InetSocketAddress;
 
