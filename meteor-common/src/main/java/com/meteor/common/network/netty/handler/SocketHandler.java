@@ -2,6 +2,8 @@ package com.meteor.common.network.netty.handler;
 
 import com.meteor.common.log.LogUtils;
 import com.meteor.common.log.Logger;
+import com.meteor.common.network.exchange.RpcInfo;
+import com.meteor.common.rpc.CommonInvoker;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -20,20 +22,20 @@ public class SocketHandler extends ChannelInboundHandlerAdapter implements BaseH
         return SingletonHolder.INSTANCE;
     }
 
+    private CommonInvoker commonInvoker=CommonInvoker.getInstance();
+
 
     //接收消息
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        //log.debug("thread.name={}", Thread.currentThread().getName());
         Channel channel = ctx.channel();
-//        ByteBuf buf = (ByteBuf) msg;
-//        byte[] bytes = new byte[buf.readableBytes()];
-//        buf.readBytes(bytes);
-//        String message = new String(bytes, "UTF-8");
-        System.out.println(channel.remoteAddress() + ": " + "服务端收到的消息： " + msg);
+        if (msg instanceof RpcInfo) {
+            RpcInfo rpcInfo = (RpcInfo) msg;
+            System.out.println(channel.remoteAddress() + ": " + "服务端收到的消息： " + rpcInfo.toString());
 
-
-        decodeMsg(ctx, msg);
+            commonInvoker.invoker(channel,rpcInfo);
+            //decodeMsg(ctx, msg);
+        }
 
     }
 

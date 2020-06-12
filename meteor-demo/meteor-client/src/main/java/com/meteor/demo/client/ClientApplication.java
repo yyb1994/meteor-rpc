@@ -28,9 +28,10 @@ public class ClientApplication {
 
         Thread.sleep(2000L);
         Request request = new Request();
+        request.setVersion("1.0.0");
         RpcInfo rpcInfo = new RpcInfo();
         request.setData(rpcInfo);
-        rpcInfo.setServiceName("com.meteor.service.goods.GoodsBatchViewService");
+        rpcInfo.setServiceName("ServiceBean:com.meteor.demo.service.goods.GoodsBatchViewService:1.0.0:mt");
         rpcInfo.setMethodName("goodsBatchQuery");
         nettyClient.getChannel().writeAndFlush(request);
     }

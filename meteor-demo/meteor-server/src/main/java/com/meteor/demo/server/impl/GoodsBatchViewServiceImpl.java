@@ -13,7 +13,7 @@ import java.util.List;
 public class GoodsBatchViewServiceImpl implements GoodsBatchViewService {
 
     public DataResult<List<GoodsCommonDTO>> goodsBatchQuery() {
-
+        System.out.println(9999);
         return new DataResult<List<GoodsCommonDTO>>();
     }
 }
