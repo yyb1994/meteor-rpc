@@ -17,4 +17,6 @@ public interface GoodsBatchViewService {
 
     DataResult<List<GoodsCommonDTO>> goodsBatchQuery();
 
+    DataResult<List<GoodsCommonDTO>> goodsBatchQuery(String nameLike);
+
 }

@@ -16,4 +16,8 @@ public class GoodsCommonDTO extends BaseBean {
      */
     private String path;
 
+    public GoodsCommonDTO(String name, String path) {
+        this.name = name;
+        this.path = path;
+    }
 }

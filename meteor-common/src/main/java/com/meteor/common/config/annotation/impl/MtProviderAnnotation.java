@@ -44,7 +44,7 @@ public class MtProviderAnnotation {
         AnnotationAttributes serviceAnnotationAttributes = getAnnotationAttributes(annotation, false, false);
         String beanName = ServiceBeanNameBuilder.generateServiceBeanName(serviceAnnotationAttributes, interClass);
         //注入到Map中
-        CommonConstants.Server.REGISTER_SERVICE_MAP.put(beanName, interClass);
+        CommonConstants.Server.REGISTER_SERVICE_MAP.put(beanName, beanClass);
         if (log.isInfoEnabled()) {
             log.info("The Bean[" + beanClass.getName() +
                     "] of ServiceBean has been registered with name : " + beanName);
