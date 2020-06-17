@@ -2,7 +2,7 @@ package com.meteor.common.util;
 
 
 import com.meteor.common.rpc.ResultEnum;
-import com.meteor.common.rpc.exception.CommonException;
+import com.meteor.common.rpc.exception.RpcException;
 import com.meteor.common.log.LogUtils;
 import com.meteor.common.log.Logger;
 import org.apache.commons.lang3.ClassUtils;
@@ -56,7 +56,7 @@ public class BeanUtil {
             }
             return tList;
         } catch (Exception e) {
-            throw new CommonException(ResultEnum.BEAN_COPY_ERROR.getCode(), ResultEnum.BEAN_COPY_ERROR.getMsg(), e);
+            throw new RpcException(ResultEnum.BEAN_COPY_ERROR.getCode(), ResultEnum.BEAN_COPY_ERROR.getMsg(), e);
         }
     }
 
@@ -73,7 +73,7 @@ public class BeanUtil {
             return target;
         } catch (Exception e) {
             log.error(e);
-            throw new CommonException(ResultEnum.BEAN_COPY_ERROR.getCode(), ResultEnum.BEAN_COPY_ERROR.getMsg(), e);
+            throw new RpcException(ResultEnum.BEAN_COPY_ERROR.getCode(), ResultEnum.BEAN_COPY_ERROR.getMsg(), e);
         }
     }
 
