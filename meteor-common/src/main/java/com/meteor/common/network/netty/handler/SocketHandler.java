@@ -2,7 +2,7 @@ package com.meteor.common.network.netty.handler;
 
 import com.meteor.common.log.LogUtils;
 import com.meteor.common.log.Logger;
-import com.meteor.common.network.exchange.RpcInfo;
+import com.meteor.common.network.exchange.Request;
 import com.meteor.common.rpc.CommonInvoker;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
@@ -29,12 +29,11 @@ public class SocketHandler extends ChannelInboundHandlerAdapter implements BaseH
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         Channel channel = ctx.channel();
-        if (msg instanceof RpcInfo) {
-            RpcInfo rpcInfo = (RpcInfo) msg;
-            System.out.println(channel.remoteAddress() + ": " + "服务端收到的消息： " + rpcInfo.toString());
+        if (msg instanceof Request) {
+            Request request = (Request) msg;
+            System.out.println(channel.remoteAddress() + ": " + "服务端收到的消息： " + request.getData().toString());
 
-            commonInvoker.invoker(channel,rpcInfo);
-            //decodeMsg(ctx, msg);
+            commonInvoker.invoker(channel,request);
         }
 
     }

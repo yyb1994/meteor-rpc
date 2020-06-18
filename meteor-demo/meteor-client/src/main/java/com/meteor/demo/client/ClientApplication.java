@@ -1,11 +1,12 @@
 package com.meteor.demo.client;
 
-import com.meteor.common.network.exchange.Request;
+import com.meteor.common.network.exchange.ExchangeChannelOperation;
 import com.meteor.common.network.exchange.RpcInfo;
 import com.meteor.common.network.netty.NettyClient;
 import com.meteor.common.network.netty.channel.SocketClinetChannel;
 
 import java.net.InetSocketAddress;
+import java.util.concurrent.CompletableFuture;
 
 public class ClientApplication {
     public static void main(String[] args) throws Throwable {
@@ -27,12 +28,14 @@ public class ClientApplication {
         thread.start();
 
         Thread.sleep(2000L);
-        Request request = new Request();
-        request.setVersion("1.0.0");
+
         RpcInfo rpcInfo = new RpcInfo();
-        request.setData(rpcInfo);
         rpcInfo.setServiceName("ServiceBean:com.meteor.demo.service.goods.GoodsBatchViewService:1.0.0:mt");
         rpcInfo.setMethodName("goodsBatchQuery");
-        nettyClient.getChannel().writeAndFlush(request);
+        rpcInfo.setParameterTypes(new Class[]{String.class});
+        rpcInfo.setArguments(new Object[]{"It's,me"});
+        ExchangeChannelOperation exchangeChannelOperation = new ExchangeChannelOperation(nettyClient);
+        CompletableFuture<Object> future = exchangeChannelOperation.send(rpcInfo);
+        Object result = future.get();
     }
 }

@@ -36,7 +36,7 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
     /*接收消息*/
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-
+        System.out.println(msg);
     }
 
     @Override

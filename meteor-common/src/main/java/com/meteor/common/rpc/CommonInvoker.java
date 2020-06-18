@@ -3,6 +3,8 @@ package com.meteor.common.rpc;
 import com.meteor.common.core.CommonConstants;
 import com.meteor.common.log.LogUtils;
 import com.meteor.common.log.Logger;
+import com.meteor.common.network.exchange.Request;
+import com.meteor.common.network.exchange.Response;
 import com.meteor.common.network.exchange.RpcInfo;
 import io.netty.channel.Channel;
 
@@ -19,13 +21,20 @@ public class CommonInvoker {
         return CommonInvoker.SingletonHolder.INSTANCE;
     }
 
-    public void invoker(Channel channel, RpcInfo rpcInfo) {
+    public void invoker(Channel channel, Request request) {
+        RpcInfo rpcInfo = (RpcInfo) request.getData();
         String serviceName = rpcInfo.getServiceName();
-        Class cls = CommonConstants.Server.REGISTER_SERVICE_MAP.get(serviceName);
+        Class<?> cls = CommonConstants.Server.REGISTER_SERVICE_MAP.get(serviceName);
+        Response response = new Response();
+        response.setId(request.getId());
+        response.setHeartbeat(false);
+        response.setVersion(request.getVersion());
         try {
-            Method method = cls.getMethod(rpcInfo.getMethodName(), null);
-            method.invoke(cls.newInstance());
-            System.out.println();
+            Object o = cls.newInstance();
+            Method method = cls.getMethod(rpcInfo.getMethodName(), rpcInfo.getParameterTypes());
+            Object result = method.invoke(o, rpcInfo.getArguments());
+            response.setResult(result);
+            channel.writeAndFlush(result);
         } catch (Exception e) {
             log.error(e);
         }

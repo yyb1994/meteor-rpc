@@ -66,4 +66,8 @@ public class NettyClient {
         return channel;
     }
 
+    public void send(Object message) {
+        channel.writeAndFlush(message);
+    }
+
 }

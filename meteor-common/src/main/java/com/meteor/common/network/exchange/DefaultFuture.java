@@ -1,6 +1,7 @@
 package com.meteor.common.network.exchange;
 
 
+import com.meteor.common.network.netty.NettyClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,23 +22,18 @@ public class DefaultFuture extends CompletableFuture<Object> {
 
     private static final Map<Long, DefaultFuture> FUTURES = new ConcurrentHashMap<>();
 
-    private static final Map<Long, ChannelOperation> CHANNELS = new ConcurrentHashMap<>();
-
 
     private final Request request;
 
-    private ChannelOperation channelOperation;
 
     public DefaultFuture(Request request) {
         this.request = request;
         FUTURES.put(request.getId(), this);
     }
 
-    public DefaultFuture(Request request, ChannelOperation channelOperation) {
+    public DefaultFuture(Request request, NettyClient channelOperation) {
         this.request = request;
-        this.channelOperation = channelOperation;
         FUTURES.put(request.getId(), this);
-        CHANNELS.put(request.getId(), channelOperation);
     }
 
     public void doReceived(Response res) {
@@ -53,8 +49,8 @@ public class DefaultFuture extends CompletableFuture<Object> {
         return FUTURES.get(id);
     }
 
-    public static DefaultFuture newFuture(Request request, ChannelOperation channelOperation) {
-        final DefaultFuture future = new DefaultFuture(request, channelOperation);
+    public static DefaultFuture newFuture(Request request) {
+        final DefaultFuture future = new DefaultFuture(request);
         return future;
     }
 }

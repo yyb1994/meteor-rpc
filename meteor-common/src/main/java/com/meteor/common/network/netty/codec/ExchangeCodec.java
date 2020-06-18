@@ -147,6 +147,8 @@ public class ExchangeCodec extends ByteToMessageCodec<Object> {
             byte[] body = new byte[bodyLength];
             buffer.readBytes(body);
             if (isRequest) {
+                Request request=new Request();
+                request
                 RpcInfo rpcInfo = serializer.deserialize(body, RpcInfo.class);
                 out.add(rpcInfo);
             }

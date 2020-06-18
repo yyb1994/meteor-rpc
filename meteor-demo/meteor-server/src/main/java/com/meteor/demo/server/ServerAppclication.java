@@ -16,11 +16,12 @@ public class ServerAppclication {
         String sc = "com.meteor.demo.server.impl";
         MtProviderAnnotation.registerBean(sc);
 
+        SocketServerChannel serverChannel = new SocketServerChannel();
+        NettyServer server = new NettyServer(12311, serverChannel);
+
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                SocketServerChannel serverChannel = new SocketServerChannel();
-                NettyServer server = new NettyServer(12311, serverChannel);
                 try {
                     server.doOpen();
                 } catch (Throwable throwable) {
