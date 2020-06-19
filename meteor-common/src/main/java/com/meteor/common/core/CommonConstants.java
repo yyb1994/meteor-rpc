@@ -12,8 +12,10 @@ import java.util.concurrent.ConcurrentHashMap;
 public interface CommonConstants {
 
     public static class Server {
-        public static ConcurrentHashMap<String, Class> REGISTER_SERVICE_MAP = new ConcurrentHashMap<>();
+        public static ConcurrentHashMap<String, Class<?>> REGISTER_SERVICE_MAP = new ConcurrentHashMap<>();
     }
+
+    String DEFAULT_DUBBO_PROTOCOL_VERSION = "1.0.0";
 
     String PROVIDER = "provider";
 

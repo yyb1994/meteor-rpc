@@ -1,5 +1,6 @@
 package com.meteor.common.network.netty.codec;
 
+import com.meteor.common.core.CommonConstants;
 import com.meteor.common.core.StandardCharsets;
 import com.meteor.common.log.LogUtils;
 import com.meteor.common.log.Logger;
@@ -128,10 +129,6 @@ public class ExchangeCodec extends ByteToMessageCodec<Object> {
             byte status = buffer.readByte();
             // 3.读取消息id
             long invokeId = buffer.readLong();
-
-            if (isHeartbeat) {
-                return;
-            }
             // 4. 读取data长度
             int bodyLength = buffer.readInt();
             // TODO 如果dataLength过大，可能导致问题
@@ -146,11 +143,18 @@ public class ExchangeCodec extends ByteToMessageCodec<Object> {
             // 4.读取消息体
             byte[] body = new byte[bodyLength];
             buffer.readBytes(body);
-            if (isRequest) {
-                Request request=new Request();
-                request
+            if (!isRequest) {
+                Response response = new Response(invokeId);
+                response.setStatus(status);
+                Object data = serializer.deserialize(body, Object.class);
+                response.setResult(data);
+                out.add(response);
+            } else {
+                Request request = new Request(invokeId);
+                request.setVersion(CommonConstants.DEFAULT_DUBBO_PROTOCOL_VERSION);
                 RpcInfo rpcInfo = serializer.deserialize(body, RpcInfo.class);
-                out.add(rpcInfo);
+                request.setData(rpcInfo);
+                out.add(request);
             }
         } catch (Exception e) {
             log.error(e);

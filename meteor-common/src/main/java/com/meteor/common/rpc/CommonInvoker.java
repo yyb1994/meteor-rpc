@@ -34,7 +34,7 @@ public class CommonInvoker {
             Method method = cls.getMethod(rpcInfo.getMethodName(), rpcInfo.getParameterTypes());
             Object result = method.invoke(o, rpcInfo.getArguments());
             response.setResult(result);
-            channel.writeAndFlush(result);
+            channel.writeAndFlush(response);
         } catch (Exception e) {
             log.error(e);
         }

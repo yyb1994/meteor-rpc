@@ -2,6 +2,7 @@ package com.meteor.common.rpc;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -15,6 +16,7 @@ import java.util.Objects;
  */
 @Getter
 @Setter
+@ToString
 public class DataResult<T> implements Serializable {
     private static final long serialVersionUID = -817780767118878736L;
     /**

@@ -33,9 +33,10 @@ public class RpcInfo implements Serializable {
     private String targetServiceUniqueName;
 
     private String methodName;
+
     private String serviceName;
 
-    private transient Class<?>[] parameterTypes;
+    private Class<?>[] parameterTypes;
 
     private String parameterTypesDesc;
     private String[] compatibleParamSignatures;
