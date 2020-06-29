@@ -1,12 +1,12 @@
 package com.meteor.common.config.annotation;
 
+import com.meteor.common.core.CommonConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.annotation.AnnotationAttributes;
-import org.springframework.core.env.Environment;
+
+import java.util.Optional;
 
 public class ServiceBeanNameBuilder {
-    private static final String SEPARATOR = ":";
-
     // Required
     private String interfaceClassName;
 
@@ -18,10 +18,10 @@ public class ServiceBeanNameBuilder {
     /**
      * bean name构造
      */
-    public static String generateServiceBeanName(AnnotationAttributes serviceAnnotationAttributes, Class<?> interfaceClass) {
+    public static String generateServiceBeanName(AnnotationAttributes attributes, Class<?> interfaceClass) {
         ServiceBeanNameBuilder builder = create(interfaceClass)
-                .group(serviceAnnotationAttributes.getString("group"))
-                .version(serviceAnnotationAttributes.getString("version"));
+                .group(Optional.ofNullable(attributes.getString(CommonConstants.GROUP_KEY)).orElse(CommonConstants.DEFAULT_GROUP))
+                .version(Optional.ofNullable(attributes.getString(CommonConstants.VERSION_KEY)).orElse(CommonConstants.DEFAULT_VERSION));
         return builder.build();
     }
 
@@ -36,7 +36,7 @@ public class ServiceBeanNameBuilder {
 
     private static void append(StringBuilder builder, String value) {
         if (StringUtils.isNotBlank(value)) {
-            builder.append(SEPARATOR).append(value);
+            builder.append(value);
         }
     }
 
@@ -51,16 +51,16 @@ public class ServiceBeanNameBuilder {
     }
 
     public String build() {
-        StringBuilder beanNameBuilder = new StringBuilder("ServiceBean");
+        StringBuilder beanNameBuilder = new StringBuilder();
         // Required
         append(beanNameBuilder, interfaceClassName);
+        append(beanNameBuilder, CommonConstants.GROUP_SEPERATOR);
         // Optional
         append(beanNameBuilder, version);
+        append(beanNameBuilder, CommonConstants.GROUP_SEPERATOR);
         append(beanNameBuilder, group);
         // Build and remove last ":"
         String rawBeanName = beanNameBuilder.toString();
-//        // Resolve placeholders
-//        return environment.resolvePlaceholders(rawBeanName);
         return rawBeanName;
     }
 }

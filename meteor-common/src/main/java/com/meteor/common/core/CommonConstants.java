@@ -26,5 +26,19 @@ public interface CommonConstants {
 
     String HEARTBEAT_EVENT = null;
 
+    String GROUP_KEY = "group";
+
+    String GROUP_SEPERATOR = ":";
+
+    String DEFAULT_GROUP = "default";
+
+    String VERSION_KEY = "version";
+
+    String DEFAULT_VERSION = "1.0.0";
+
+    String TIMEOUT_KEY = "timeout";
+
+    int DEFAULT_TIMEOUT = 1000;
+
 
 }

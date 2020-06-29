@@ -1,10 +1,8 @@
 package com.meteor.common.rpc;
 
-import lombok.Getter;
-
 import java.io.Serializable;
 
-@Getter
+
 public enum ResultEnum implements Serializable {
     /**
      * code 定义规则，
@@ -21,19 +19,14 @@ public enum ResultEnum implements Serializable {
     PARAM_ERROR("5", "参数异常"),
     NOT_SUBMIT_AGAIN("6", "请勿重复提交"),
 
-    /*5001开头 不需要人为干预异常（一般是指前端数据传输错误，不需要开发处理）*/
+    /*2001开头 类方法异常*/
+    SERVICE_NOT_FOUNT("2001", "无法找到类：{}"),
+    SERVICE_METHOD_NOT_FOUNT("2001", "无法找到类：{} 对应的方法：{}"),
 
 
+    /*3001开头 XXX异常*/
 
-    /*6001开头 需要人为干预异常，需要联系开发同学处理*/
-
-
-    /*7001开头 非业务异常*/
-    BEAN_COPY_ERROR("7001.BEAN_COPY_ERROR", "BeanCopy失败"),
-    SELECT_LIST_ERROR("", "无法取到集合下标{}的值,集合长度{}"),
-
-
-    ;
+    /*4001开头 XXX异常*/;
 
 
     private String code;
@@ -44,5 +37,19 @@ public enum ResultEnum implements Serializable {
         this.msg = msg;
     }
 
+    public String getCode() {
+        return code;
+    }
 
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
 }

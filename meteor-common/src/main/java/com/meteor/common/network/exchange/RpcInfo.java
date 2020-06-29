@@ -17,29 +17,19 @@
 package com.meteor.common.network.exchange;
 
 
-import lombok.Getter;
-import lombok.Setter;
-
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Map;
 
-@Getter
-@Setter
 public class RpcInfo implements Serializable {
 
     private static final long serialVersionUID = -4355285085441097045L;
-
-    private String targetServiceUniqueName;
 
     private String methodName;
 
     private String serviceName;
 
     private Class<?>[] parameterTypes;
-
-    private String parameterTypesDesc;
-    private String[] compatibleParamSignatures;
 
     private Object[] arguments;
 
@@ -59,4 +49,44 @@ public class RpcInfo implements Serializable {
                 + ", attachments=" + attachments + "]";
     }
 
+
+    public String getMethodName() {
+        return methodName;
+    }
+
+    public void setMethodName(String methodName) {
+        this.methodName = methodName;
+    }
+
+    public String getServiceName() {
+        return serviceName;
+    }
+
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
+    }
+
+    public Class<?>[] getParameterTypes() {
+        return parameterTypes;
+    }
+
+    public void setParameterTypes(Class<?>[] parameterTypes) {
+        this.parameterTypes = parameterTypes;
+    }
+
+    public Object[] getArguments() {
+        return arguments;
+    }
+
+    public void setArguments(Object[] arguments) {
+        this.arguments = arguments;
+    }
+
+    public Map<String, Object> getAttachments() {
+        return attachments;
+    }
+
+    public void setAttachments(Map<String, Object> attachments) {
+        this.attachments = attachments;
+    }
 }

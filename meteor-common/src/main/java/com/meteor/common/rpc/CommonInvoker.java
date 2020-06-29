@@ -6,6 +6,7 @@ import com.meteor.common.log.Logger;
 import com.meteor.common.network.exchange.Request;
 import com.meteor.common.network.exchange.Response;
 import com.meteor.common.network.exchange.RpcInfo;
+import com.meteor.common.rpc.exception.RpcException;
 import io.netty.channel.Channel;
 
 import java.lang.reflect.Method;
@@ -25,6 +26,9 @@ public class CommonInvoker {
         RpcInfo rpcInfo = (RpcInfo) request.getData();
         String serviceName = rpcInfo.getServiceName();
         Class<?> cls = CommonConstants.Server.REGISTER_SERVICE_MAP.get(serviceName);
+        if (cls == null) {
+            throw new RpcException(ResultEnum.SERVICE_NOT_FOUNT, serviceName);
+        }
         Response response = new Response();
         response.setId(request.getId());
         response.setHeartbeat(false);
@@ -35,6 +39,8 @@ public class CommonInvoker {
             Object result = method.invoke(o, rpcInfo.getArguments());
             response.setResult(result);
             channel.writeAndFlush(response);
+        } catch (NoSuchMethodException e) {
+            throw new RpcException(ResultEnum.SERVICE_METHOD_NOT_FOUNT, serviceName, rpcInfo.getMethodName());
         } catch (Exception e) {
             log.error(e);
         }

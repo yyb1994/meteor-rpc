@@ -22,7 +22,7 @@ public class SocketHandler extends ChannelInboundHandlerAdapter implements BaseH
         return SingletonHolder.INSTANCE;
     }
 
-    private CommonInvoker commonInvoker=CommonInvoker.getInstance();
+    private CommonInvoker commonInvoker = CommonInvoker.getInstance();
 
 
     //接收消息
@@ -33,7 +33,7 @@ public class SocketHandler extends ChannelInboundHandlerAdapter implements BaseH
             Request request = (Request) msg;
             System.out.println(channel.remoteAddress() + ": " + "服务端收到的消息： " + request.getData().toString());
 
-            commonInvoker.invoker(channel,request);
+            commonInvoker.invoker(channel, request);
         }
 
     }
@@ -54,6 +54,7 @@ public class SocketHandler extends ChannelInboundHandlerAdapter implements BaseH
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        cause.printStackTrace();
         ctx.channel().close();
     }
 

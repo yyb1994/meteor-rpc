@@ -1,5 +1,6 @@
 package com.meteor.demo.client;
 
+import com.meteor.common.core.CommonConstants;
 import com.meteor.common.network.exchange.ExchangeChannelOperation;
 import com.meteor.common.network.exchange.RpcInfo;
 import com.meteor.common.network.netty.NettyClient;
@@ -7,6 +8,8 @@ import com.meteor.common.network.netty.channel.SocketClinetChannel;
 import com.meteor.common.rpc.DataResult;
 
 import java.net.InetSocketAddress;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public class ClientApplication {
@@ -39,12 +42,18 @@ public class ClientApplication {
 
 
         RpcInfo rpcInfo = new RpcInfo();
-        rpcInfo.setServiceName("ServiceBean:com.meteor.demo.service.goods.GoodsBatchViewService:1.0.0:mt");
-        rpcInfo.setMethodName("goodsBatchQuery");
+        rpcInfo.setServiceName("com.meteor.demo.service.goods.GoodsBatchViewService:1.0.0:mt");
+        rpcInfo.setMethodName("goodsBatchQuery1");
         rpcInfo.setParameterTypes(new Class[]{String.class});
         rpcInfo.setArguments(new Object[]{"It's,me"});
+        Map<String, Object> attachments = new HashMap<>();
+        attachments.put(CommonConstants.GROUP_KEY, "mt");
+        attachments.put(CommonConstants.VERSION_KEY, "1.0.0");
+        attachments.put(CommonConstants.TIMEOUT_KEY, CommonConstants.DEFAULT_TIMEOUT);
+        rpcInfo.setAttachments(attachments);
         ExchangeChannelOperation exchangeChannelOperation = new ExchangeChannelOperation(nettyClient);
         CompletableFuture<Object> future = exchangeChannelOperation.send(rpcInfo);
+
 
         Object result = future.get();
         if (result instanceof DataResult) {

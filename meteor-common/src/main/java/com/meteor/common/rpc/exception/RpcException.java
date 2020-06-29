@@ -22,23 +22,23 @@ public class RpcException extends RuntimeException implements Serializable {
     }
 
     public RpcException(String code, String msg) {
-        super(msg);
+        super(code + ":" + msg);
         this.code = code;
     }
 
     public RpcException(String code, String msg, Throwable e) {
-        super(msg, e);
+        super(code + ":" + msg, e);
         this.code = code;
     }
 
     public RpcException(String code, Throwable e) {
-        super(e.getMessage());
+        super(code + ":" + e.getMessage());
         this.code = code;
     }
 
 
     public RpcException(ResultEnum eum, Object... params) {
-        super(StrFormatter.format(eum.getMsg(), params));
+        super(eum.getCode() + "." + eum.name() + ":" + StrFormatter.format(eum.getMsg(), params));
         this.code = eum.getCode();
     }
 
